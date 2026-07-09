@@ -5,60 +5,64 @@ export const siteContent = {
     instagramUser: 'anavim.librosycafe',
     tagline: 'Donde cada página se disfruta con aroma a café.',
     description:
-      'Una librería familiar con libros seleccionados, café de especialidad y detalles pensados para regalar, compartir y disfrutar sin apuro.',
+      'Una librería familiar que une buenas lecturas, café de especialidad y detalles pensados para regalar, compartir y disfrutar sin apuro.',
   },
   contact: {
     // Reemplazar por el número real, sin +, espacios ni guiones. Ejemplo: 5493532678034
-    whatsappNumber: '5493530000000',
+    // Mientras esté vacío, la web usa Instagram como canal principal para evitar enlaces rotos.
+    whatsappNumber: '',
     whatsappMessage:
       'Hola ANAVIM, quiero consultar por libros, café o promos disponibles.',
     instagramUrl: 'https://www.instagram.com/anavim.librosycafe/',
-    email: 'anavim.librosycafe@gmail.com',
+    email: '',
     location: 'Oliva, Córdoba',
+    note:
+      'La web funciona como showroom: consultás disponibilidad y coordinamos la compra directo por mensaje.',
   },
   hero: {
-    eyebrow: 'Librería & Café de especialidad',
+    eyebrow: 'Librería & café de especialidad',
     title: 'Libros para regalar, café para disfrutar y momentos para compartir.',
     text:
-      'ANAVIM nace como un proyecto familiar: una forma simple y linda de acercar buenas lecturas, café rico y detalles con propósito.',
+      'ANAVIM nace como un proyecto familiar: una forma cercana y cuidada de acercar lecturas con propósito, café rico y regalos simples que dicen algo más.',
   },
   valueCards: [
     {
-      title: 'Libros seleccionados',
-      text: 'Lecturas elegidas con intención: para crecer, regalar, acompañar y volver a leer.',
+      title: 'Lecturas elegidas con intención',
+      text: 'No se trata de llenar estantes por llenar. Elegimos libros que acompañen, edifiquen, inspiren y den ganas de volver a leer.',
     },
     {
-      title: 'Café de especialidad',
-      text: 'Café cuidado, con aroma a pausa, charla y sobremesa. Lo importante también se sirve en taza.',
+      title: 'Café con aroma a pausa',
+      text: 'Café de especialidad para cortar el ruido, compartir una charla o acompañar ese capítulo que pedía cinco minutos más.',
     },
     {
-      title: 'Detalles para regalar',
-      text: 'Combos, frases, señaladores y propuestas simples para entregar algo más que un objeto.',
+      title: 'Regalos con sentido',
+      text: 'Combos, frases, señaladores y detalles preparados con estética cálida para regalar algo personal, no un trámite envuelto.',
     },
   ],
   featured: [
     {
       category: 'Libros',
       title: 'Lecturas para el alma',
-      text: 'Libros cristianos, devocionales, familia, crecimiento personal y títulos seleccionados.',
+      text: 'Libros cristianos, devocionales, familia, crecimiento personal y títulos seleccionados para distintas etapas de la vida.',
       cta: 'Consultar títulos',
     },
     {
       category: 'Café',
       title: 'Café de especialidad',
-      text: 'Café en grano o molido, según disponibilidad. Ideal para acompañar una buena lectura.',
+      text: 'Café en grano o molido, según disponibilidad. Una buena taza no arregla el mundo, pero ayuda bastante.',
       cta: 'Consultar café',
     },
     {
       category: 'Promos',
       title: 'Combos ANAVIM',
-      text: 'Opciones para regalar: libro + café + detalle. Simple, cálido y sin vueltas.',
+      text: 'Opciones para regalar: libro + café + detalle. Simple, cálido y preparado para quedar bien sin sobreactuar.',
       cta: 'Ver promos',
     },
   ],
   categories: [
     'Libros cristianos',
     'Devocionales',
+    'Biblias',
     'Familia y crianza',
     'Crecimiento personal',
     'Café de especialidad',
@@ -67,19 +71,19 @@ export const siteContent = {
   gallery: [
     {
       title: 'Nuevos ingresos',
-      text: 'Espacio preparado para cargar fotos reales de Instagram.',
+      text: 'Espacio preparado para mostrar novedades, recomendaciones y libros destacados.',
     },
     {
       title: 'Frases ANAVIM',
-      text: 'Piezas visuales para compartir inspiración y lecturas recomendadas.',
+      text: 'Piezas visuales para compartir inspiración, lecturas y pequeños recordatorios con sentido.',
     },
     {
       title: 'Café y libros',
-      text: 'Una estética cálida: papel, madera, café, crema y azul noche.',
+      text: 'Una estética cálida: papel, madera, café, crema y azul noche. La santa alianza del escritorio ordenado.',
     },
     {
       title: 'Promos y regalos',
-      text: 'Combos simples para fechas especiales, encuentros o detalles personales.',
+      text: 'Combos simples para fechas especiales, encuentros, agradecimientos o detalles personales.',
     },
   ],
   about: {
