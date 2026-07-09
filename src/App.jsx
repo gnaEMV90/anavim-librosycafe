@@ -1,8 +1,13 @@
 import { siteContent } from './data/siteContent'
 
-const whatsappHref = `https://wa.me/${siteContent.contact.whatsappNumber}?text=${encodeURIComponent(
-  siteContent.contact.whatsappMessage,
-)}`
+const hasWhatsapp = Boolean(siteContent.contact.whatsappNumber?.trim())
+const whatsappHref = hasWhatsapp
+  ? `https://wa.me/${siteContent.contact.whatsappNumber}?text=${encodeURIComponent(
+      siteContent.contact.whatsappMessage,
+    )}`
+  : siteContent.contact.instagramUrl
+const contactLabel = hasWhatsapp ? 'Consultar por WhatsApp' : 'Consultar por Instagram'
+const contactButtonLabel = hasWhatsapp ? 'Abrir WhatsApp' : 'Abrir Instagram'
 
 function Header() {
   return (
@@ -35,7 +40,7 @@ function Hero() {
 
         <div className="hero-actions">
           <a className="btn btn-primary" href={whatsappHref} target="_blank" rel="noreferrer">
-            Consultar por WhatsApp
+            {contactLabel}
           </a>
           <a
             className="btn btn-secondary"
@@ -156,21 +161,19 @@ function ContactSection() {
       <div>
         <p className="eyebrow">Contacto</p>
         <h2 id="contacto-title">¿Buscás un libro, café o una promo para regalar?</h2>
-        <p>
-          Escribinos y te contamos qué hay disponible. La web funciona como showroom: la atención y
-          coordinación se hacen directo por WhatsApp o Instagram.
-        </p>
+        <p>{siteContent.contact.note}</p>
       </div>
 
       <div className="contact-card">
         <a className="btn btn-primary" href={whatsappHref} target="_blank" rel="noreferrer">
-          Abrir WhatsApp
+          {contactButtonLabel}
         </a>
         <a href={siteContent.contact.instagramUrl} target="_blank" rel="noreferrer">
           @{siteContent.brand.instagramUser}
         </a>
         <span>{siteContent.contact.location}</span>
-        <span>{siteContent.contact.email}</span>
+        {siteContent.contact.email ? <span>{siteContent.contact.email}</span> : null}
+        {!hasWhatsapp ? <small>WhatsApp pendiente de configurar.</small> : null}
       </div>
     </section>
   )
