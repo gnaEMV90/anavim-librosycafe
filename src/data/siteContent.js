@@ -8,9 +8,8 @@ export const siteContent = {
       'Una librería familiar que une buenas lecturas, café de especialidad y detalles pensados para regalar, compartir y disfrutar sin apuro.',
   },
   contact: {
-    // Reemplazar por el número real, sin +, espacios ni guiones. Ejemplo: 5493532678034
-    // Mientras esté vacío, la web usa Instagram como canal principal para evitar enlaces rotos.
-    whatsappNumber: '',
+    // Número real de WhatsApp, sin +, espacios ni guiones.
+    whatsappNumber: '5493532678034',
     whatsappMessage:
       'Hola ANAVIM, quiero consultar por libros, café o promos disponibles.',
     instagramUrl: 'https://www.instagram.com/anavim.librosycafe/',
