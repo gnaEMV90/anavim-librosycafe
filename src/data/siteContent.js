@@ -42,20 +42,26 @@ export const siteContent = {
     {
       category: 'Libros',
       title: 'Lecturas para el alma',
-      text: 'Libros cristianos, devocionales, familia, crecimiento personal y títulos seleccionados para distintas etapas de la vida.',
+      text: 'Biblias infantiles, libros cristianos, devocionales y lecturas seleccionadas para distintas etapas de la vida.',
       cta: 'Consultar títulos',
+      imageKey: 'readingFamilyImage',
+      imageAlt: 'Mamá y niña leyendo una Biblia infantil en un ambiente cálido y familiar.',
     },
     {
       category: 'Café',
       title: 'Café de especialidad',
       text: 'Café en grano o molido, según disponibilidad. Una buena taza no arregla el mundo, pero ayuda bastante.',
       cta: 'Consultar café',
+      imageKey: 'coffeeImage',
+      imageAlt: 'Taza de café vista desde arriba sobre una mesa de madera.',
     },
     {
       category: 'Promos',
       title: 'Combos ANAVIM',
-      text: 'Opciones para regalar: libro + café + detalle. Simple, cálido y preparado para quedar bien sin sobreactuar.',
+      text: 'Opciones para regalar: libro + café + detalle. Esta sección queda lista para sumar fotos de productos extras.',
       cta: 'Ver promos',
+      imageKey: '',
+      imageAlt: '',
     },
   ],
   categories: [
