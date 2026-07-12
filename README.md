@@ -24,6 +24,8 @@ public/
   _redirects
 src/
   data/siteContent.js
+  data/featuredImages.js
+  featuredImages.css
   App.jsx
   main.jsx
   styles.css
@@ -48,7 +50,11 @@ Campos importantes:
 - `categories`: etiquetas de categorías visibles.
 - `gallery`: textos de la galería visual.
 
-Mientras `whatsappNumber` esté vacío, la web usa Instagram como canal principal para evitar enlaces rotos.
+Las imágenes principales del showroom están en:
+
+```txt
+src/data/featuredImages.js
+```
 
 ## Ejecutar local
 
@@ -92,12 +98,11 @@ Cloudflare redeploya automáticamente cada vez que se suben cambios a `main`.
 
 ## Próximas mejoras sugeridas
 
-1. Configurar WhatsApp real de ANAVIM.
-2. Reemplazar placeholders visuales por fotos reales de Instagram o fotos propias.
-3. Agregar catálogo editable por JSON si crece la cantidad de productos.
-4. Agregar filtros por categoría.
-5. Agregar sección de promos activas.
-6. Comprar dominio propio más adelante si aporta valor.
+1. Cargar fotos reales para promos y productos extras.
+2. Agregar catálogo editable por JSON si crece la cantidad de productos.
+3. Agregar filtros por categoría.
+4. Agregar sección de promos activas.
+5. Comprar dominio propio más adelante si aporta valor.
 
 ## Criterio del proyecto
 
