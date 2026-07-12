@@ -1,5 +1,6 @@
 import { siteContent } from './data/siteContent'
 import { featuredImages } from './data/featuredImages'
+import './featuredImages.css'
 
 const hasWhatsapp = Boolean(siteContent.contact.whatsappNumber?.trim())
 const whatsappHref = hasWhatsapp
