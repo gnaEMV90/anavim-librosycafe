@@ -16,6 +16,9 @@ El sitio está pensado como primera versión online: presenta la marca, muestra 
 
 ```txt
 public/
+  images/
+    libros.png
+    cafe.png
   favicon.svg
   logo-anavim.svg
   social-preview.svg
@@ -24,7 +27,6 @@ public/
   _redirects
 src/
   data/siteContent.js
-  data/featuredImages.js
   featuredImages.css
   App.jsx
   main.jsx
@@ -50,10 +52,18 @@ Campos importantes:
 - `categories`: etiquetas de categorías visibles.
 - `gallery`: textos de la galería visual.
 
-Las imágenes principales del showroom están en:
+Las imágenes principales del showroom están como archivos públicos:
 
 ```txt
-src/data/featuredImages.js
+public/images/libros.png
+public/images/cafe.png
+```
+
+En el contenido se referencian así:
+
+```js
+imageSrc: '/images/libros.png'
+imageSrc: '/images/cafe.png'
 ```
 
 ## Ejecutar local
