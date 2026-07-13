@@ -191,6 +191,31 @@ function AboutSection() {
   )
 }
 
+function FinalCtaSection() {
+  return (
+    <section className="section final-cta-section" aria-labelledby="final-cta-title">
+      <div className="final-cta-panel">
+        <p className="eyebrow">Consultas</p>
+        <h2 id="final-cta-title">{siteContent.finalCta.title}</h2>
+        <p>{siteContent.finalCta.text}</p>
+        <div className="hero-actions final-cta-actions">
+          <a className="btn btn-primary" href={whatsappHref} target="_blank" rel="noreferrer">
+            {contactButtonLabel}
+          </a>
+          <a
+            className="btn btn-secondary"
+            href={siteContent.contact.instagramUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Ver Instagram
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function ContactSection() {
   return (
     <section className="section contact-section" id="contacto" aria-labelledby="contacto-title">
@@ -246,6 +271,7 @@ export default function App() {
         <ProcessSection />
         <GallerySection />
         <AboutSection />
+        <FinalCtaSection />
         <ContactSection />
       </main>
       <Footer />
