@@ -110,4 +110,9 @@ export const siteContent = {
     text:
       'ANAVIM es una invitación a bajar un cambio, elegir una buena lectura y compartir algo que edifique. Un proyecto familiar que busca unir libros, café y cercanía en una propuesta simple, cuidada y humana.',
   },
+  finalCta: {
+    title: '¿Querés consultar disponibilidad o armar un regalo?',
+    text:
+      'Escribinos por WhatsApp y te ayudamos a elegir libros, café o combos según la ocasión. La idea es que sea simple, cálido y bien acompañado.',
+  },
 }
