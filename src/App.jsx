@@ -1,5 +1,4 @@
 import { siteContent } from './data/siteContent'
-import { featuredImages } from './data/featuredImages'
 import './featuredImages.css'
 
 const hasWhatsapp = Boolean(siteContent.contact.whatsappNumber?.trim())
@@ -97,27 +96,28 @@ function FeaturedSection() {
       </div>
 
       <div className="featured-grid">
-        {siteContent.featured.map((item) => {
-          const imageSrc = item.imageKey ? featuredImages[item.imageKey] : null
-
-          return (
-            <article className="featured-card" key={item.title}>
-              {imageSrc ? (
-                <img className="featured-card-image" src={imageSrc} alt={item.imageAlt} />
-              ) : (
-                <div className="featured-card-placeholder" aria-hidden="true">
-                  <span>Próximamente</span>
-                </div>
-              )}
-              <span>{item.category}</span>
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-              <a href={whatsappHref} target="_blank" rel="noreferrer">
-                {item.cta}
-              </a>
-            </article>
-          )
-        })}
+        {siteContent.featured.map((item) => (
+          <article className="featured-card" key={item.title}>
+            {item.imageSrc ? (
+              <img
+                className="featured-card-image"
+                src={item.imageSrc}
+                alt={item.imageAlt}
+                loading="lazy"
+              />
+            ) : (
+              <div className="featured-card-placeholder" aria-hidden="true">
+                <span>Próximamente</span>
+              </div>
+            )}
+            <span>{item.category}</span>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+            <a href={whatsappHref} target="_blank" rel="noreferrer">
+              {item.cta}
+            </a>
+          </article>
+        ))}
       </div>
     </section>
   )
