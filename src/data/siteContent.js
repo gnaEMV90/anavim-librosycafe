@@ -73,6 +73,20 @@ export const siteContent = {
     'Café de especialidad',
     'Regalos y combos',
   ],
+  process: [
+    {
+      title: 'Elegís lo que te interesa',
+      text: 'Mirás los destacados, categorías o promos disponibles. Si algo te llama la atención, nos escribís.',
+    },
+    {
+      title: 'Consultás por WhatsApp',
+      text: 'Te confirmamos disponibilidad, opciones de café, libros relacionados y detalles para armar el pedido.',
+    },
+    {
+      title: 'Coordinamos la entrega',
+      text: 'Definimos forma de pago, retiro o envío según corresponda. Simple, claro y sin vueltas raras.',
+    },
+  ],
   gallery: [
     {
       title: 'Nuevos ingresos',
