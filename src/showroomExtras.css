@@ -55,6 +55,35 @@
   margin-bottom: 0;
 }
 
+.final-cta-section {
+  background:
+    radial-gradient(circle at 12% 20%, rgba(205, 167, 122, 0.28), transparent 20rem),
+    var(--cream);
+}
+
+.final-cta-panel {
+  max-width: 72rem;
+  padding: clamp(2rem, 5vw, 4rem);
+  background:
+    linear-gradient(135deg, rgba(255, 250, 241, 0.96), rgba(231, 211, 180, 0.72)),
+    var(--paper);
+  border: 1px solid rgba(83, 54, 38, 0.12);
+  border-radius: 2.4rem;
+  box-shadow: var(--shadow);
+}
+
+.final-cta-panel h2 {
+  max-width: 52rem;
+}
+
+.final-cta-panel p {
+  max-width: 44rem;
+}
+
+.final-cta-actions {
+  margin-top: 1.6rem;
+}
+
 .floating-whatsapp {
   position: fixed;
   right: 1.2rem;
@@ -91,5 +120,9 @@
     right: 0.75rem;
     bottom: 0.75rem;
     left: 0.75rem;
+  }
+
+  .final-cta-panel {
+    border-radius: 1.8rem;
   }
 }
