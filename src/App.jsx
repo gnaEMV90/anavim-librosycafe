@@ -1,5 +1,6 @@
 import { siteContent } from './data/siteContent'
 import './featuredImages.css'
+import './showroomExtras.css'
 
 const hasWhatsapp = Boolean(siteContent.contact.whatsappNumber?.trim())
 const whatsappHref = hasWhatsapp
@@ -24,6 +25,7 @@ function Header() {
       <nav className="main-nav" aria-label="Navegación principal">
         <a href="#libros">Libros</a>
         <a href="#cafe">Café</a>
+        <a href="#como-comprar">Cómo comprar</a>
         <a href="#nosotros">Nosotros</a>
         <a href="#contacto">Contacto</a>
       </nav>
@@ -133,6 +135,27 @@ function CategoriesSection() {
   )
 }
 
+function ProcessSection() {
+  return (
+    <section className="section process-section" id="como-comprar" aria-labelledby="como-comprar-title">
+      <div className="section-heading compact">
+        <p className="eyebrow">Cómo comprar</p>
+        <h2 id="como-comprar-title">Simple, directo y sin carrito por ahora.</h2>
+      </div>
+
+      <div className="process-grid">
+        {siteContent.process.map((item, index) => (
+          <article className="process-card" key={item.title}>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function GallerySection() {
   return (
     <section className="section gallery-section" aria-labelledby="galeria-title">
@@ -192,6 +215,16 @@ function ContactSection() {
   )
 }
 
+function FloatingWhatsapp() {
+  if (!hasWhatsapp) return null
+
+  return (
+    <a className="floating-whatsapp" href={whatsappHref} target="_blank" rel="noreferrer">
+      Consultar por WhatsApp
+    </a>
+  )
+}
+
 function Footer() {
   return (
     <footer className="site-footer">
@@ -210,11 +243,13 @@ export default function App() {
         <ValueSection />
         <FeaturedSection />
         <CategoriesSection />
+        <ProcessSection />
         <GallerySection />
         <AboutSection />
         <ContactSection />
       </main>
       <Footer />
+      <FloatingWhatsapp />
     </>
   )
 }
