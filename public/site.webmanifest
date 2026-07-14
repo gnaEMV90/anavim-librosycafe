@@ -1,0 +1,17 @@
+{
+  "name": "ANAVIM - Libros y Café",
+  "short_name": "ANAVIM",
+  "description": "Showroom online de ANAVIM - Libros y Café.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf2e4",
+  "theme_color": "#1e314b",
+  "lang": "es-AR",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
