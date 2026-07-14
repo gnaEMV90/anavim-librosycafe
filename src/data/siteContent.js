@@ -106,9 +106,9 @@ export const siteContent = {
     },
   ],
   about: {
-    title: 'Una librería familiar, con aroma a café y propósito.',
+    title: 'Un sueño familiar, nacido de la fe y de una buena mesa.',
     text:
-      'ANAVIM es una invitación a bajar un cambio, elegir una buena lectura y compartir algo que edifique. Un proyecto familiar que busca unir libros, café y cercanía en una propuesta simple, cuidada y humana.',
+      'El 2 de septiembre de 2025 hicimos público el sueño que veníamos pensando como familia y dimos el primer paso de este proyecto. ANAVIM nace de nuestra pasión por el Señor Jesús, por la fe y, por supuesto, por los libros y un buen café. En ANAVIM – Libros y Café vas a encontrar Biblias, literatura cristiana, libros para grandes y chicos, y café para acompañar cada lectura. Nuestro deseo es que cada página y cada taza sean un espacio de inspiración, encuentro y esperanza. Bienvenidos a este viaje, nos alegra que seas parte.',
   },
   finalCta: {
     title: '¿Querés consultar disponibilidad o armar un regalo?',
