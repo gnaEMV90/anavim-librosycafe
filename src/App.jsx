@@ -180,12 +180,16 @@ function GallerySection() {
 }
 
 function AboutSection() {
+  const paragraphs = siteContent.about.paragraphs || [siteContent.about.text]
+
   return (
     <section className="section about-section" id="nosotros" aria-labelledby="nosotros-title">
       <div className="about-panel">
         <p className="eyebrow">Sobre ANAVIM</p>
         <h2 id="nosotros-title">{siteContent.about.title}</h2>
-        <p>{siteContent.about.text}</p>
+        {paragraphs.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
       </div>
     </section>
   )
@@ -244,7 +248,13 @@ function FloatingWhatsapp() {
   if (!hasWhatsapp) return null
 
   return (
-    <a className="floating-whatsapp" href={whatsappHref} target="_blank" rel="noreferrer">
+    <a
+      className="floating-whatsapp"
+      href={whatsappHref}
+      target="_blank"
+      rel="noreferrer"
+      aria-label="Consultar por WhatsApp con ANAVIM"
+    >
       Consultar por WhatsApp
     </a>
   )
