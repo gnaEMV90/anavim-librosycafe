@@ -10,6 +10,7 @@ const emptyProduct = {
   description: '',
   price: '',
   promoPrice: '',
+  cardPrice: '',
   stock: '0',
   imageSrc: '',
   isActive: true,
@@ -25,6 +26,7 @@ function normalizeProductForForm(product) {
     description: product.description || '',
     price: product.price || '',
     promoPrice: product.promoPrice || '',
+    cardPrice: product.cardPrice || '',
     stock: String(product.stock ?? 0),
     imageSrc: product.imageSrc || '',
     isActive: Boolean(product.isActive),
@@ -169,6 +171,7 @@ export default function AdminApp() {
       imageSrc: form.imageSrc.trim(),
       price: Number(form.price || 0),
       promoPrice: form.promoPrice === '' ? null : Number(form.promoPrice),
+      cardPrice: form.cardPrice === '' ? null : Number(form.cardPrice),
       stock: Number(form.stock || 0),
       displayOrder: Number(form.displayOrder || 0),
     }
@@ -307,7 +310,7 @@ export default function AdminApp() {
             />
           </label>
 
-          <div className="admin-field-row three-columns">
+          <div className="admin-field-row four-columns">
             <label>
               Precio
               <input
@@ -326,6 +329,16 @@ export default function AdminApp() {
                 value={form.promoPrice}
                 onChange={(event) => updateField('promoPrice', event.target.value)}
                 placeholder="Opcional"
+              />
+            </label>
+            <label>
+              Precio tarjeta
+              <input
+                type="number"
+                min="0"
+                value={form.cardPrice}
+                onChange={(event) => updateField('cardPrice', event.target.value)}
+                placeholder="MercadoLibre / tarjeta"
               />
             </label>
             <label>
@@ -406,9 +419,12 @@ export default function AdminApp() {
                     <span>{product.code}</span>
                     <h3>{product.title}</h3>
                     <p>{product.category} · {product.stock > 0 ? `${product.stock} en stock` : 'sin stock'}</p>
-                    <strong>
-                      {product.promoPrice ? `${formatPrice(product.promoPrice)} promo` : formatPrice(product.price)}
-                    </strong>
+                    <div className="admin-price-summary">
+                      <strong>
+                        {product.promoPrice ? `${formatPrice(product.promoPrice)} promo` : formatPrice(product.price)}
+                      </strong>
+                      {product.cardPrice ? <small>Tarjeta: {formatPrice(product.cardPrice)}</small> : null}
+                    </div>
                   </div>
                   <div className="admin-product-actions">
                     <small className={product.isActive ? 'visible' : 'hidden'}>
