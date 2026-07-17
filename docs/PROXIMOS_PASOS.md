@@ -2,33 +2,39 @@
 
 Este documento deja anotado qué conviene hacer después, sin romper la primera versión ya publicada.
 
-## Prioridad 1 - Panel administrador privado
+## Prioridad 1 - Activar panel administrador privado
 
-La próxima mejora importante es convertir el showroom en un sitio administrable.
+Ya quedó creada la base técnica para convertir el showroom en un sitio administrable.
 
-Documento técnico-funcional:
+Archivos principales:
 
 ```txt
-docs/PANEL_ADMIN.md
+/admin
+/api/products
+/api/admin/login
+/api/admin/products
+migrations/0001_products.sql
+docs/ADMIN_SETUP.md
 ```
 
 Objetivo:
 
 - Acceso privado en `/admin`.
-- Alta, edición y baja lógica de productos.
+- Alta, edición y eliminación de productos.
 - Gestión de precios.
 - Gestión de promociones.
 - Gestión de stock.
 - Productos destacados.
 - Consulta por WhatsApp con nombre y código del producto.
 
-Criterio recomendado:
+Falta configurar en Cloudflare:
 
 ```txt
-Cloudflare Pages + Pages Functions + Cloudflare D1
+ADMIN_TOKEN
+PRODUCTS_DB
 ```
 
-No conviene resolver esto con JSON local porque el navegador no puede guardar cambios en archivos del repo de forma segura.
+Después de eso, el panel privado queda operativo para cargar productos reales.
 
 ## Prioridad 2 - Productos y promos
 
@@ -64,7 +70,19 @@ Opciones a evaluar:
 
 Criterio recomendado: primero revisar lo disponible en Cloudflare. Si sirve, no agregar dependencias externas.
 
-## Prioridad 4 - Dominio propio
+## Prioridad 4 - Subida de imágenes desde admin
+
+Por ahora las imágenes se suben al repo y desde el panel se carga la ruta.
+
+Más adelante se puede evaluar:
+
+```txt
+Cloudflare R2
+```
+
+Sólo si aporta valor real. Para primera versión administrable, no hace falta.
+
+## Prioridad 5 - Dominio propio
 
 La web puede seguir gratis en Cloudflare Pages con:
 
@@ -74,7 +92,7 @@ https://anavim-librosycafe.pages.dev
 
 Más adelante, si conviene para marca, se puede comprar un dominio propio y conectarlo a Cloudflare.
 
-## Prioridad 5 - SEO local
+## Prioridad 6 - SEO local
 
 Cuando haya datos definitivos, completar:
 
