@@ -9,6 +9,11 @@
   --admin-shadow: 0 20px 52px rgba(30, 49, 75, 0.1);
 }
 
+.admin-shell,
+.admin-shell * {
+  box-sizing: border-box;
+}
+
 .admin-shell {
   min-height: 100vh;
   padding: clamp(1rem, 4vw, 3rem);
@@ -35,13 +40,14 @@
 }
 
 .admin-login-card {
-  width: min(100%, 28rem);
-  padding: 2rem;
+  width: min(100%, 34rem);
+  padding: clamp(1.4rem, 4vw, 2.4rem);
+  overflow: hidden;
   text-align: center;
 }
 
 .admin-login-card img {
-  width: 7rem;
+  width: clamp(5.5rem, 20vw, 7rem);
   margin-bottom: 1rem;
 }
 
@@ -59,11 +65,36 @@
 .admin-shell h3 {
   margin: 0;
   color: var(--admin-navy);
-  line-height: 1.05;
+  line-height: 1.03;
+}
+
+.admin-shell h1 {
+  font-size: clamp(2.35rem, 7vw, 4.8rem);
+  letter-spacing: -0.055em;
+}
+
+.admin-login-card h1 {
+  max-width: 100%;
+  margin-bottom: 1rem;
+  font-size: clamp(2.45rem, 9vw, 4.1rem);
+}
+
+.admin-shell h2 {
+  font-size: clamp(1.55rem, 3vw, 2.35rem);
+  letter-spacing: -0.035em;
+}
+
+.admin-shell h3 {
+  font-size: 1.08rem;
 }
 
 .admin-shell p {
   line-height: 1.65;
+}
+
+.admin-login-card > p:not(.admin-eyebrow) {
+  max-width: 25rem;
+  margin-inline: auto;
 }
 
 .admin-login-form,
@@ -77,6 +108,18 @@
   text-align: left;
 }
 
+.admin-login-card > a {
+  display: inline-flex;
+  margin-top: 0.85rem;
+  color: var(--admin-coffee);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.admin-login-card > a:hover {
+  color: var(--admin-navy);
+}
+
 .admin-header {
   display: flex;
   align-items: center;
@@ -88,6 +131,10 @@
 
 .admin-header p {
   margin-bottom: 0;
+}
+
+.admin-header h1 {
+  font-size: clamp(2.2rem, 6vw, 4.6rem);
 }
 
 .admin-header-actions,
@@ -121,6 +168,12 @@
   font-size: 0.88rem;
   font-weight: 850;
   text-decoration: none;
+}
+
+.admin-header-actions a:hover,
+.admin-shell button:hover,
+.admin-product-actions button:hover {
+  transform: translateY(-1px);
 }
 
 .admin-shell button.secondary,
@@ -188,6 +241,13 @@
   border: 1px solid var(--admin-border);
   border-radius: 0.9rem;
   font: inherit;
+}
+
+.admin-shell input:focus,
+.admin-shell textarea:focus {
+  border-color: rgba(30, 49, 75, 0.36);
+  box-shadow: 0 0 0 3px rgba(30, 49, 75, 0.08);
+  outline: none;
 }
 
 .admin-shell textarea {
@@ -312,5 +372,40 @@
   .admin-header,
   .admin-product-actions {
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .admin-shell {
+    padding: 0.75rem;
+  }
+
+  .admin-login-card,
+  .admin-form,
+  .admin-list-panel,
+  .admin-header {
+    border-radius: 1.35rem;
+  }
+
+  .admin-login-card h1 {
+    font-size: clamp(2.2rem, 14vw, 3.2rem);
+  }
+
+  .admin-header h1 {
+    font-size: clamp(2rem, 12vw, 3.4rem);
+  }
+
+  .admin-list-header,
+  .admin-form-actions,
+  .admin-header-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-list-header button,
+  .admin-form-actions button,
+  .admin-header-actions a,
+  .admin-header-actions button {
+    width: 100%;
   }
 }
