@@ -28,29 +28,29 @@ Crear o vincular una base D1 con este binding:
 
 ```txt
 Variable name: PRODUCTS_DB
-Database: anavim-products
+Database: anavimproducts_db
 ```
 
 La API espera exactamente el nombre `PRODUCTS_DB`.
 
-## Crear base D1 por consola
+## Crear o actualizar base D1
 
-Opción con Wrangler:
-
-```bash
-npx wrangler d1 create anavim-products
-```
-
-Luego aplicar la migración:
-
-```bash
-npx wrangler d1 migrations apply anavim-products --remote
-```
-
-La migración está en:
+La migración inicial está en:
 
 ```txt
 migrations/0001_products.sql
+```
+
+Si la tabla `products` ya existe, aplicar también esta migración nueva:
+
+```txt
+migrations/0002_add_card_price.sql
+```
+
+SQL para ejecutar una sola vez en la consola D1:
+
+```sql
+ALTER TABLE products ADD COLUMN card_price INTEGER;
 ```
 
 ## Acceso al panel
@@ -69,6 +69,7 @@ Desde ahí se puede cargar:
 - Descripción.
 - Precio.
 - Precio promocional.
+- Precio tarjeta / MercadoLibre.
 - Stock.
 - Ruta de imagen.
 - Visibilidad en la web.
