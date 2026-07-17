@@ -1,6 +1,7 @@
 import { siteContent } from './data/siteContent'
 import './featuredImages.css'
 import './showroomExtras.css'
+import './brandPolish.css'
 
 const hasWhatsapp = Boolean(siteContent.contact.whatsappNumber?.trim())
 const whatsappHref = hasWhatsapp
@@ -8,7 +9,9 @@ const whatsappHref = hasWhatsapp
       siteContent.contact.whatsappMessage,
     )}`
   : siteContent.contact.instagramUrl
-const contactLabel = hasWhatsapp ? 'Consultar por WhatsApp' : 'Consultar por Instagram'
+const contactLabel = hasWhatsapp
+  ? siteContent.hero.primaryCta || 'Consultar por WhatsApp'
+  : 'Consultar por Instagram'
 const contactButtonLabel = hasWhatsapp ? 'Abrir WhatsApp' : 'Abrir Instagram'
 
 function Header() {
@@ -41,6 +44,12 @@ function Hero() {
         <h1>{siteContent.hero.title}</h1>
         <p className="hero-text">{siteContent.hero.text}</p>
 
+        <div className="hero-tags" aria-label="Características de ANAVIM">
+          {siteContent.hero.tags.map((tag) => (
+            <span key={tag}>{tag}</span>
+          ))}
+        </div>
+
         <div className="hero-actions">
           <a className="btn btn-primary" href={whatsappHref} target="_blank" rel="noreferrer">
             {contactLabel}
@@ -51,7 +60,7 @@ function Hero() {
             target="_blank"
             rel="noreferrer"
           >
-            Ver Instagram
+            {siteContent.hero.secondaryCta || 'Ver Instagram'}
           </a>
         </div>
       </div>
@@ -115,7 +124,7 @@ function FeaturedSection() {
             <span>{item.category}</span>
             <h3>{item.title}</h3>
             <p>{item.text}</p>
-            <a href={whatsappHref} target="_blank" rel="noreferrer">
+            <a href={whatsappHref} target="_blank" rel="noreferrer" aria-label={`${item.cta} por WhatsApp`}>
               {item.cta}
             </a>
           </article>
@@ -168,7 +177,8 @@ function GallerySection() {
         {siteContent.gallery.map((item, index) => (
           <article className={`gallery-card gallery-card-${index + 1}`} key={item.title}>
             <div>
-              <span>0{index + 1}</span>
+              <span className="gallery-number">0{index + 1}</span>
+              {item.tag ? <small className="gallery-tag">{item.tag}</small> : null}
               <h3>{item.title}</h3>
               <p>{item.text}</p>
             </div>
@@ -181,15 +191,30 @@ function GallerySection() {
 
 function AboutSection() {
   const paragraphs = siteContent.about.paragraphs || [siteContent.about.text]
+  const highlights = siteContent.about.highlights || []
 
   return (
     <section className="section about-section" id="nosotros" aria-labelledby="nosotros-title">
-      <div className="about-panel">
-        <p className="eyebrow">Sobre ANAVIM</p>
-        <h2 id="nosotros-title">{siteContent.about.title}</h2>
-        {paragraphs.map((paragraph) => (
-          <p key={paragraph}>{paragraph}</p>
-        ))}
+      <div className="about-layout">
+        <div className="about-panel">
+          <p className="eyebrow">Sobre ANAVIM</p>
+          <h2 id="nosotros-title">{siteContent.about.title}</h2>
+          {paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+
+        {highlights.length ? (
+          <div className="about-highlight-grid" aria-label="Resumen de la historia de ANAVIM">
+            {highlights.map((item) => (
+              <article className="about-highlight-card" key={item.title}>
+                <span>{item.label}</span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   )
