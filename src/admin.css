@@ -223,6 +223,10 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
+.admin-field-row.four-columns {
+  grid-template-columns: repeat(4, 1fr);
+}
+
 .admin-shell label {
   display: grid;
   gap: 0.45rem;
@@ -329,6 +333,17 @@
   color: var(--admin-navy);
 }
 
+.admin-price-summary {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.admin-price-summary small {
+  color: rgba(83, 54, 38, 0.72);
+  font-size: 0.84rem;
+  font-weight: 850;
+}
+
 .admin-product-actions {
   flex-direction: column;
   align-items: flex-end;
@@ -360,7 +375,8 @@
 @media (max-width: 980px) {
   .admin-grid-layout,
   .admin-field-row.two-columns,
-  .admin-field-row.three-columns {
+  .admin-field-row.three-columns,
+  .admin-field-row.four-columns {
     grid-template-columns: 1fr;
   }
 
