@@ -43,6 +43,7 @@ function serializeProduct(row) {
     description: row.description,
     price: row.price,
     promoPrice: row.promo_price,
+    cardPrice: row.card_price,
     stock: row.stock,
     imageSrc: row.image_src,
     isActive: Boolean(row.is_active),
@@ -61,6 +62,7 @@ function normalizePayload(body) {
     description: String(body.description || '').trim(),
     price: Number.parseInt(body.price || 0, 10) || 0,
     promoPrice: body.promoPrice === null || body.promoPrice === '' ? null : Number.parseInt(body.promoPrice, 10) || null,
+    cardPrice: body.cardPrice === null || body.cardPrice === '' ? null : Number.parseInt(body.cardPrice, 10) || null,
     stock: Number.parseInt(body.stock || 0, 10) || 0,
     imageSrc: String(body.imageSrc || '').trim(),
     isActive: body.isActive ? 1 : 0,
@@ -109,6 +111,7 @@ export async function onRequestPut(context) {
              description = ?,
              price = ?,
              promo_price = ?,
+             card_price = ?,
              stock = ?,
              image_src = ?,
              is_active = ?,
@@ -124,6 +127,7 @@ export async function onRequestPut(context) {
         product.description,
         product.price,
         product.promoPrice,
+        product.cardPrice,
         product.stock,
         product.imageSrc,
         product.isActive,
@@ -142,7 +146,7 @@ export async function onRequestPut(context) {
     return Response.json({ product: serializeProduct(updated) })
   } catch (error) {
     return Response.json(
-      { error: 'No se pudo actualizar el producto. Revisá que el código no esté repetido.' },
+      { error: 'No se pudo actualizar el producto. Revisá que el código no esté repetido y que la migración de precio tarjeta esté aplicada.' },
       { status: 400 },
     )
   }
