@@ -240,7 +240,7 @@ function ProductCatalogSection() {
 
                   {hasCardPrice ? (
                     <div className="product-card-price-row">
-                      <span>Tarjeta / MercadoLibre</span>
+                      <span>Precio tarjeta</span>
                       <strong>{formatPrice(product.cardPrice)}</strong>
                     </div>
                   ) : null}
