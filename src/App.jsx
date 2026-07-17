@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react'
+import AdminApp from './Admin'
 import { siteContent } from './data/siteContent'
 import './featuredImages.css'
 import './showroomExtras.css'
 import './brandPolish.css'
+import './products.css'
 
 const hasWhatsapp = Boolean(siteContent.contact.whatsappNumber?.trim())
 const whatsappHref = hasWhatsapp
@@ -13,6 +16,27 @@ const contactLabel = hasWhatsapp
   ? siteContent.hero.primaryCta || 'Consultar por WhatsApp'
   : 'Consultar por Instagram'
 const contactButtonLabel = hasWhatsapp ? 'Abrir WhatsApp' : 'Abrir Instagram'
+
+function formatPrice(value) {
+  const amount = Number(value || 0)
+
+  if (!amount) return 'Consultar precio'
+
+  return new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    maximumFractionDigits: 0,
+  }).format(amount)
+}
+
+function getProductWhatsappHref(product) {
+  if (!hasWhatsapp) return siteContent.contact.instagramUrl
+
+  const code = product.code ? ` (Código: ${product.code})` : ''
+  const message = `Hola ANAVIM, quiero consultar por este producto: ${product.title}${code}.`
+
+  return `https://wa.me/${siteContent.contact.whatsappNumber}?text=${encodeURIComponent(message)}`
+}
 
 function Header() {
   return (
@@ -28,6 +52,7 @@ function Header() {
       <nav className="main-nav" aria-label="Navegación principal">
         <a href="#libros">Libros</a>
         <a href="#cafe">Café</a>
+        <a href="#catalogo">Catálogo</a>
         <a href="#como-comprar">Cómo comprar</a>
         <a href="#nosotros">Nosotros</a>
         <a href="#contacto">Contacto</a>
@@ -129,6 +154,96 @@ function FeaturedSection() {
             </a>
           </article>
         ))}
+      </div>
+    </section>
+  )
+}
+
+function ProductCatalogSection() {
+  const [products, setProducts] = useState([])
+  const [status, setStatus] = useState('loading')
+
+  useEffect(() => {
+    let isMounted = true
+
+    fetch('/api/products')
+      .then((response) => {
+        if (!response.ok) throw new Error('No se pudo cargar el catálogo')
+        return response.json()
+      })
+      .then((data) => {
+        if (!isMounted) return
+        setProducts(Array.isArray(data.products) ? data.products : [])
+        setStatus('ready')
+      })
+      .catch(() => {
+        if (!isMounted) return
+        setProducts([])
+        setStatus('error')
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  if (status === 'loading' || status === 'error' || products.length === 0) return null
+
+  return (
+    <section className="section product-section" id="catalogo" aria-labelledby="catalogo-title">
+      <div className="section-heading compact">
+        <p className="eyebrow">{siteContent.catalog.eyebrow}</p>
+        <h2 id="catalogo-title">{siteContent.catalog.title}</h2>
+        <p>{siteContent.catalog.text}</p>
+      </div>
+
+      <div className="product-grid">
+        {products.map((product) => {
+          const hasPromo = Boolean(product.promoPrice && product.promoPrice < product.price)
+          const productHref = getProductWhatsappHref(product)
+
+          return (
+            <article className="product-card" key={product.id || product.code}>
+              {product.imageSrc ? (
+                <img className="product-image" src={product.imageSrc} alt={product.title} loading="lazy" />
+              ) : (
+                <div className="product-image product-image-placeholder" aria-hidden="true">
+                  <span>{product.category || 'ANAVIM'}</span>
+                </div>
+              )}
+
+              <div className="product-body">
+                <div className="product-meta">
+                  <span>{product.category}</span>
+                  {product.code ? <small>{product.code}</small> : null}
+                </div>
+
+                <h3>{product.title}</h3>
+                <p>{product.description}</p>
+
+                <div className="product-price-row">
+                  {hasPromo ? (
+                    <>
+                      <strong>{formatPrice(product.promoPrice)}</strong>
+                      <small>{formatPrice(product.price)}</small>
+                    </>
+                  ) : (
+                    <strong>{formatPrice(product.price)}</strong>
+                  )}
+                </div>
+
+                <div className="product-footer-row">
+                  <span className={product.stock > 0 ? 'stock-pill available' : 'stock-pill unavailable'}>
+                    {product.stock > 0 ? 'Disponible' : 'Consultar stock'}
+                  </span>
+                  <a href={productHref} target="_blank" rel="noreferrer">
+                    Consultar
+                  </a>
+                </div>
+              </div>
+            </article>
+          )
+        })}
       </div>
     </section>
   )
@@ -295,6 +410,10 @@ function Footer() {
 }
 
 export default function App() {
+  const isAdminPath = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')
+
+  if (isAdminPath) return <AdminApp />
+
   return (
     <>
       <Header />
@@ -302,6 +421,7 @@ export default function App() {
         <Hero />
         <ValueSection />
         <FeaturedSection />
+        <ProductCatalogSection />
         <CategoriesSection />
         <ProcessSection />
         <GallerySection />
