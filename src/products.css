@@ -54,7 +54,8 @@
 
 .product-meta,
 .product-footer-row,
-.product-price-row {
+.product-price-row,
+.product-card-price-row {
   display: flex;
   align-items: center;
   gap: 0.65rem;
@@ -84,20 +85,44 @@
   margin-bottom: 1.1rem;
 }
 
-.product-price-row {
-  min-height: 2.1rem;
+.product-price-stack {
+  display: grid;
+  gap: 0.55rem;
+  min-height: 4.7rem;
   margin-bottom: 1rem;
 }
 
-.product-price-row strong {
+.product-price-row,
+.product-card-price-row {
+  justify-content: space-between;
+  padding: 0.72rem 0.85rem;
+  background: rgba(231, 211, 180, 0.24);
+  border: 1px solid rgba(83, 54, 38, 0.08);
+  border-radius: 1rem;
+}
+
+.product-price-row > span,
+.product-card-price-row > span {
+  color: rgba(83, 54, 38, 0.74);
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.product-price-row strong,
+.product-card-price-row strong {
   color: var(--navy);
-  font-size: 1.25rem;
+  font-size: 1.08rem;
+  white-space: nowrap;
 }
 
 .product-price-row small {
   color: rgba(83, 54, 38, 0.56);
   font-weight: 800;
   text-decoration: line-through;
+}
+
+.product-card-price-row {
+  background: rgba(30, 49, 75, 0.06);
 }
 
 .product-footer-row {
