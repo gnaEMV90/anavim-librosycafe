@@ -67,6 +67,14 @@ export const siteContent = {
       imageAlt: '',
     },
   ],
+  catalog: {
+    eyebrow: 'Catálogo',
+    title: 'Productos disponibles para consultar',
+    text:
+      'Cuando el catálogo esté cargado desde el panel administrador, acá van a aparecer libros, café, promos y regalos con consulta directa por WhatsApp.',
+    emptyText:
+      'El catálogo administrable ya está preparado. Los productos se van a mostrar cuando estén cargados desde el panel privado.',
+  },
   categories: [
     'Libros cristianos',
     'Devocionales',
