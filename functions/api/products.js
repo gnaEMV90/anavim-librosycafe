@@ -7,6 +7,7 @@ function serializeProduct(row) {
     description: row.description,
     price: row.price,
     promoPrice: row.promo_price,
+    cardPrice: row.card_price,
     stock: row.stock,
     imageSrc: row.image_src,
     isActive: Boolean(row.is_active),
