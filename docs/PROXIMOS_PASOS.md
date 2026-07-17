@@ -2,7 +2,35 @@
 
 Este documento deja anotado qué conviene hacer después, sin romper la primera versión ya publicada.
 
-## Prioridad 1 - Productos y promos
+## Prioridad 1 - Panel administrador privado
+
+La próxima mejora importante es convertir el showroom en un sitio administrable.
+
+Documento técnico-funcional:
+
+```txt
+docs/PANEL_ADMIN.md
+```
+
+Objetivo:
+
+- Acceso privado en `/admin`.
+- Alta, edición y baja lógica de productos.
+- Gestión de precios.
+- Gestión de promociones.
+- Gestión de stock.
+- Productos destacados.
+- Consulta por WhatsApp con nombre y código del producto.
+
+Criterio recomendado:
+
+```txt
+Cloudflare Pages + Pages Functions + Cloudflare D1
+```
+
+No conviene resolver esto con JSON local porque el navegador no puede guardar cambios en archivos del repo de forma segura.
+
+## Prioridad 2 - Productos y promos
 
 Crear una sección real de productos cuando estén listas las fotos.
 
@@ -24,7 +52,7 @@ promo-regalo-01.png
 
 Criterio: nombres cortos, sin espacios, sin tildes y con guiones.
 
-## Prioridad 2 - Contador privado de visitas
+## Prioridad 3 - Contador privado de visitas
 
 El contador no debe mostrarse en la web pública.
 
@@ -35,26 +63,6 @@ Opciones a evaluar:
 3. Evitar contadores públicos, widgets visibles o servicios que carguen publicidad.
 
 Criterio recomendado: primero revisar lo disponible en Cloudflare. Si sirve, no agregar dependencias externas.
-
-## Prioridad 3 - Catálogo simple
-
-Si empieza a haber más de 6 o 9 productos, conviene pasar a un archivo editable:
-
-```txt
-src/data/products.js
-```
-
-Cada producto podría tener:
-
-```js
-{
-  title: 'Combo libro + café',
-  category: 'Combos',
-  description: 'Detalle breve del producto.',
-  imageSrc: '/images/productos/combo-libro-cafe-01.png',
-  cta: 'Consultar disponibilidad'
-}
-```
 
 ## Prioridad 4 - Dominio propio
 
@@ -79,4 +87,4 @@ No conviene inventar nada hasta que esté confirmado.
 
 ## Criterio
 
-Primero showroom claro, lindo y rápido. Después contador privado y productos. Después catálogo. Después automatización. El carrito puede esperar sentado con un café.
+Primero showroom claro, lindo y rápido. Después panel administrador. Después contador privado. Después automatización. El carrito puede esperar sentado con un café.
