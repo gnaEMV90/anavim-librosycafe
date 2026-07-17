@@ -1,0 +1,219 @@
+.hero-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  position: absolute;
+  top: 8%;
+  right: 42%;
+  width: 8rem;
+  height: 8rem;
+  pointer-events: none;
+  content: "";
+  background: radial-gradient(circle, rgba(184, 120, 84, 0.16), transparent 70%);
+  border-radius: 999px;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.45rem;
+}
+
+.hero-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0.45rem 0.8rem;
+  color: var(--coffee);
+  background: rgba(255, 250, 241, 0.82);
+  border: 1px solid rgba(83, 54, 38, 0.12);
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(30, 49, 75, 0.06);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.hero-card {
+  overflow: hidden;
+}
+
+.hero-card::after {
+  position: absolute;
+  left: 1.6rem;
+  bottom: 1.7rem;
+  max-width: 13rem;
+  color: rgba(30, 49, 75, 0.58);
+  content: "Cada página y cada taza, un espacio de encuentro.";
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  font-style: italic;
+  line-height: 1.25;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--navy), var(--navy-dark));
+}
+
+.btn-secondary {
+  box-shadow: 0 10px 26px rgba(30, 49, 75, 0.06);
+}
+
+.value-card,
+.featured-card,
+.process-card,
+.contact-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.value-card:hover,
+.featured-card:hover,
+.process-card:hover,
+.contact-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 56px rgba(30, 49, 75, 0.11);
+}
+
+.gallery-card div {
+  max-width: 24rem;
+}
+
+.gallery-card .gallery-number {
+  margin-right: 0.65rem;
+}
+
+.gallery-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  padding: 0.35rem 0.7rem;
+  color: var(--paper);
+  background: rgba(255, 250, 241, 0.12);
+  border: 1px solid rgba(255, 250, 241, 0.16);
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.about-section {
+  background:
+    radial-gradient(circle at 12% 50%, rgba(205, 167, 122, 0.35), transparent 24rem),
+    radial-gradient(circle at 90% 20%, rgba(184, 120, 84, 0.16), transparent 22rem),
+    var(--navy-dark);
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.85fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.about-panel {
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.about-panel h2 {
+  max-width: 52rem;
+}
+
+.about-panel p:last-child {
+  margin-bottom: 0;
+}
+
+.about-highlight-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.about-highlight-card {
+  padding: 1.45rem;
+  background: rgba(255, 250, 241, 0.94);
+  border: 1px solid rgba(255, 250, 241, 0.18);
+  border-radius: 1.6rem;
+  box-shadow: 0 18px 48px rgba(5, 10, 18, 0.16);
+}
+
+.about-highlight-card span {
+  display: inline-flex;
+  margin-bottom: 0.75rem;
+  color: var(--terracotta);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.about-highlight-card h3 {
+  margin-bottom: 0.45rem;
+  color: var(--coffee);
+  font-size: 1.1rem;
+}
+
+.about-highlight-card p {
+  margin-bottom: 0;
+  font-size: 0.96rem;
+  line-height: 1.62;
+}
+
+.final-cta-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.final-cta-panel::after {
+  position: absolute;
+  right: -2rem;
+  bottom: -3rem;
+  color: rgba(30, 49, 75, 0.06);
+  content: "ANAVIM";
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(4rem, 12vw, 9rem);
+  font-weight: 800;
+  letter-spacing: -0.08em;
+}
+
+.final-cta-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.site-footer {
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+}
+
+@media (max-width: 920px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-card::after {
+    max-width: 16rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-tags span {
+    font-size: 0.8rem;
+  }
+
+  .hero-card::after {
+    display: none;
+  }
+
+  .about-highlight-card {
+    padding: 1.2rem;
+  }
+}
