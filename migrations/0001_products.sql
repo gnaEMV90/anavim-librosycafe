@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS products (
   description TEXT NOT NULL DEFAULT '',
   price INTEGER NOT NULL DEFAULT 0,
   promo_price INTEGER,
+  card_price INTEGER,
   stock INTEGER NOT NULL DEFAULT 0,
   image_src TEXT NOT NULL DEFAULT '',
   is_active INTEGER NOT NULL DEFAULT 1,
