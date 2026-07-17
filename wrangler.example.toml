@@ -1,0 +1,12 @@
+# Copiar este archivo como wrangler.toml sólo si se quiere trabajar localmente con Wrangler.
+# En Cloudflare Pages también se puede configurar todo desde el panel web.
+
+name = "anavim-librosycafe"
+compatibility_date = "2026-07-17"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "PRODUCTS_DB"
+database_name = "anavim-products"
+database_id = "REEMPLAZAR_CON_DATABASE_ID"
+migrations_dir = "migrations"
