@@ -200,6 +200,7 @@ function ProductCatalogSection() {
       <div className="product-grid">
         {products.map((product) => {
           const hasPromo = Boolean(product.promoPrice && product.promoPrice < product.price)
+          const hasCardPrice = Boolean(product.cardPrice)
           const productHref = getProductWhatsappHref(product)
 
           return (
@@ -221,15 +222,28 @@ function ProductCatalogSection() {
                 <h3>{product.title}</h3>
                 <p>{product.description}</p>
 
-                <div className="product-price-row">
-                  {hasPromo ? (
-                    <>
-                      <strong>{formatPrice(product.promoPrice)}</strong>
-                      <small>{formatPrice(product.price)}</small>
-                    </>
-                  ) : (
-                    <strong>{formatPrice(product.price)}</strong>
-                  )}
+                <div className="product-price-stack">
+                  <div className="product-price-row">
+                    {hasPromo ? (
+                      <>
+                        <span>Precio</span>
+                        <strong>{formatPrice(product.promoPrice)}</strong>
+                        <small>{formatPrice(product.price)}</small>
+                      </>
+                    ) : (
+                      <>
+                        <span>Precio</span>
+                        <strong>{formatPrice(product.price)}</strong>
+                      </>
+                    )}
+                  </div>
+
+                  {hasCardPrice ? (
+                    <div className="product-card-price-row">
+                      <span>Tarjeta / MercadoLibre</span>
+                      <strong>{formatPrice(product.cardPrice)}</strong>
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="product-footer-row">
