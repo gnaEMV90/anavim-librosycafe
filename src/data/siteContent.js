@@ -5,7 +5,7 @@ export const siteContent = {
     instagramUser: 'anavim.librosycafe',
     tagline: 'Donde cada página se disfruta con aroma a café.',
     description:
-      'Una librería familiar que une buenas lecturas, café de especialidad y detalles pensados para regalar, compartir y disfrutar sin apuro.',
+      'Una librería familiar que une buenas lecturas, café de especialidad y detalles preparados con intención: para regalar, compartir y disfrutar sin apuro.',
   },
   contact: {
     // Número real de WhatsApp, sin +, espacios ni guiones.
@@ -19,10 +19,13 @@ export const siteContent = {
       'La web funciona como showroom: consultás disponibilidad y coordinamos la compra directo por mensaje.',
   },
   hero: {
-    eyebrow: 'Librería & café de especialidad',
-    title: 'Libros para regalar, café para disfrutar y momentos para compartir.',
+    eyebrow: 'Librería cristiana familiar & café de especialidad',
+    title: 'Libros, café y regalos con propósito para disfrutar sin apuro.',
     text:
-      'ANAVIM nace como un proyecto familiar: una forma cercana y cuidada de acercar lecturas con propósito, café rico y regalos simples que dicen algo más.',
+      'ANAVIM nace como un sueño familiar: acercar lecturas que edifiquen, café rico y detalles simples que inviten a compartir, regalar y volver a lo importante.',
+    primaryCta: 'Quiero consultar',
+    secondaryCta: 'Ver novedades en Instagram',
+    tags: ['Biblias', 'Literatura cristiana', 'Café', 'Regalos con sentido'],
   },
   valueCards: [
     {
@@ -89,20 +92,24 @@ export const siteContent = {
   ],
   gallery: [
     {
+      tag: 'Novedades',
       title: 'Nuevos ingresos',
-      text: 'Espacio preparado para mostrar novedades, recomendaciones y libros destacados.',
+      text: 'Espacio preparado para mostrar libros recomendados, títulos destacados y novedades que llegan a ANAVIM.',
     },
     {
-      title: 'Frases ANAVIM',
-      text: 'Piezas visuales para compartir inspiración, lecturas y pequeños recordatorios con sentido.',
+      tag: 'Fe diaria',
+      title: 'Biblias y devocionales',
+      text: 'Lecturas para acompañar la oración, el crecimiento personal y el camino de fe de grandes y chicos.',
     },
     {
-      title: 'Café y libros',
-      text: 'Una estética cálida: papel, madera, café, crema y azul noche. La santa alianza del escritorio ordenado.',
+      tag: 'Pausa',
+      title: 'Café para acompañar lecturas',
+      text: 'Café de especialidad para hacer de cada lectura un momento más cálido, simple y disfrutable.',
     },
     {
-      title: 'Promos y regalos',
-      text: 'Combos simples para fechas especiales, encuentros, agradecimientos o detalles personales.',
+      tag: 'Regalos',
+      title: 'Combos y detalles preparados con cariño',
+      text: 'Ideas para regalar algo con sentido: libros, café, señaladores, frases y detalles listos para compartir.',
     },
   ],
   about: {
@@ -112,6 +119,23 @@ export const siteContent = {
       'ANAVIM nace de nuestra pasión por el Señor Jesús, por la fe y, por supuesto, por los libros y un buen café.',
       'En ANAVIM – Libros y Café vas a encontrar Biblias, literatura cristiana, libros para grandes y chicos, y café para acompañar cada lectura.',
       'Nuestro deseo es que cada página y cada taza sean un espacio de inspiración, encuentro y esperanza. Bienvenidos a este viaje, nos alegra que seas parte.',
+    ],
+    highlights: [
+      {
+        label: 'Inicio',
+        title: '2 de septiembre de 2025',
+        text: 'El día en que compartimos públicamente el sueño que veníamos gestando como familia.',
+      },
+      {
+        label: 'Raíz',
+        title: 'Fe, libros y café',
+        text: 'Un proyecto nacido del amor por Jesús, las buenas lecturas y los encuentros simples alrededor de una mesa.',
+      },
+      {
+        label: 'Deseo',
+        title: 'Inspiración y esperanza',
+        text: 'Que cada página y cada taza abran un espacio de encuentro, descanso y propósito.',
+      },
     ],
   },
   finalCta: {
