@@ -24,7 +24,19 @@ promo-regalo-01.png
 
 Criterio: nombres cortos, sin espacios, sin tildes y con guiones.
 
-## Prioridad 2 - Catálogo simple
+## Prioridad 2 - Contador privado de visitas
+
+El contador no debe mostrarse en la web pública.
+
+Opciones a evaluar:
+
+1. Usar analítica privada del panel de Cloudflare, si alcanza para ver visitas, páginas y origen básico.
+2. Agregar una herramienta gratuita de analítica liviana y privada, sólo si Cloudflare no alcanza.
+3. Evitar contadores públicos, widgets visibles o servicios que carguen publicidad.
+
+Criterio recomendado: primero revisar lo disponible en Cloudflare. Si sirve, no agregar dependencias externas.
+
+## Prioridad 3 - Catálogo simple
 
 Si empieza a haber más de 6 o 9 productos, conviene pasar a un archivo editable:
 
@@ -44,7 +56,7 @@ Cada producto podría tener:
 }
 ```
 
-## Prioridad 3 - Dominio propio
+## Prioridad 4 - Dominio propio
 
 La web puede seguir gratis en Cloudflare Pages con:
 
@@ -54,7 +66,7 @@ https://anavim-librosycafe.pages.dev
 
 Más adelante, si conviene para marca, se puede comprar un dominio propio y conectarlo a Cloudflare.
 
-## Prioridad 4 - SEO local
+## Prioridad 5 - SEO local
 
 Cuando haya datos definitivos, completar:
 
@@ -67,4 +79,4 @@ No conviene inventar nada hasta que esté confirmado.
 
 ## Criterio
 
-Primero showroom claro, lindo y rápido. Después catálogo. Después automatización. El carrito puede esperar sentado con un café.
+Primero showroom claro, lindo y rápido. Después contador privado y productos. Después catálogo. Después automatización. El carrito puede esperar sentado con un café.
