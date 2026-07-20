@@ -32,10 +32,30 @@ function formatPrice(value) {
 function getProductWhatsappHref(product) {
   if (!hasWhatsapp) return siteContent.contact.instagramUrl
 
-  const code = product.code ? ` (Código: ${product.code})` : ''
-  const message = `Hola ANAVIM, quiero consultar por este producto: ${product.title}${code}.`
+  const messageLines = [
+    'Hola ANAVIM, quiero consultar por este producto:',
+    product.title,
+    product.code ? `Código: ${product.code}` : '',
+    product.price ? `Precio: ${formatPrice(product.price)}` : '',
+    product.cardPrice ? `Precio tarjeta: ${formatPrice(product.cardPrice)}` : '',
+  ].filter(Boolean)
 
-  return `https://wa.me/${siteContent.contact.whatsappNumber}?text=${encodeURIComponent(message)}`
+  return `https://wa.me/${siteContent.contact.whatsappNumber}?text=${encodeURIComponent(
+    messageLines.join('\n'),
+  )}`
+}
+
+function trackProductConsult(product) {
+  fetch('/api/consults', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      productId: product.id,
+      productCode: product.code,
+      productTitle: product.title,
+    }),
+    keepalive: true,
+  }).catch(() => {})
 }
 
 function Header() {
@@ -162,6 +182,8 @@ function FeaturedSection() {
 function ProductCatalogSection() {
   const [products, setProducts] = useState([])
   const [status, setStatus] = useState('loading')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState('Todas')
 
   useEffect(() => {
     let isMounted = true
@@ -189,6 +211,21 @@ function ProductCatalogSection() {
 
   if (status === 'loading' || status === 'error' || products.length === 0) return null
 
+  const categories = Array.from(
+    new Set(products.map((product) => product.category).filter(Boolean)),
+  ).sort((a, b) => a.localeCompare(b, 'es'))
+  const normalizedSearch = searchTerm.trim().toLowerCase()
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory = categoryFilter === 'Todas' || product.category === categoryFilter
+    const searchableText = [product.title, product.code, product.category, product.description]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase()
+    const matchesSearch = !normalizedSearch || searchableText.includes(normalizedSearch)
+
+    return matchesCategory && matchesSearch
+  })
+
   return (
     <section className="section product-section" id="catalogo" aria-labelledby="catalogo-title">
       <div className="section-heading compact">
@@ -197,68 +234,103 @@ function ProductCatalogSection() {
         <p>{siteContent.catalog.text}</p>
       </div>
 
-      <div className="product-grid">
-        {products.map((product) => {
-          const hasPromo = Boolean(product.promoPrice && product.promoPrice < product.price)
-          const hasCardPrice = Boolean(product.cardPrice)
-          const productHref = getProductWhatsappHref(product)
+      <div className="product-toolbar" aria-label="Filtros del catálogo">
+        <label>
+          Buscar
+          <input
+            type="search"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+            placeholder="Libro, Biblia, café..."
+          />
+        </label>
+        <label>
+          Categoría
+          <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)}>
+            <option value="Todas">Todas</option>
+            {categories.map((category) => (
+              <option value={category} key={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </label>
+        <span>
+          {filteredProducts.length} de {products.length} productos
+        </span>
+      </div>
 
-          return (
-            <article className="product-card" key={product.id || product.code}>
-              {product.imageSrc ? (
-                <img className="product-image" src={product.imageSrc} alt={product.title} loading="lazy" />
-              ) : (
-                <div className="product-image product-image-placeholder" aria-hidden="true">
-                  <span>{product.category || 'ANAVIM'}</span>
-                </div>
-              )}
+      {filteredProducts.length ? (
+        <div className="product-grid">
+          {filteredProducts.map((product) => {
+            const hasPromo = Boolean(product.promoPrice && product.promoPrice < product.price)
+            const hasCardPrice = Boolean(product.cardPrice)
+            const productHref = getProductWhatsappHref(product)
 
-              <div className="product-body">
-                <div className="product-meta">
-                  <span>{product.category}</span>
-                  {product.code ? <small>{product.code}</small> : null}
-                </div>
+            return (
+              <article className="product-card" key={product.id || product.code}>
+                {product.imageSrc ? (
+                  <img className="product-image" src={product.imageSrc} alt={product.title} loading="lazy" />
+                ) : (
+                  <div className="product-image product-image-placeholder" aria-hidden="true">
+                    <span>{product.category || 'ANAVIM'}</span>
+                  </div>
+                )}
 
-                <h3>{product.title}</h3>
-                <p>{product.description}</p>
-
-                <div className="product-price-stack">
-                  <div className="product-price-row">
-                    {hasPromo ? (
-                      <>
-                        <span>Precio</span>
-                        <strong>{formatPrice(product.promoPrice)}</strong>
-                        <small>{formatPrice(product.price)}</small>
-                      </>
-                    ) : (
-                      <>
-                        <span>Precio</span>
-                        <strong>{formatPrice(product.price)}</strong>
-                      </>
-                    )}
+                <div className="product-body">
+                  <div className="product-meta">
+                    <span>{product.category}</span>
+                    {product.code ? <small>{product.code}</small> : null}
                   </div>
 
-                  {hasCardPrice ? (
-                    <div className="product-card-price-row">
-                      <span>Precio tarjeta</span>
-                      <strong>{formatPrice(product.cardPrice)}</strong>
-                    </div>
-                  ) : null}
-                </div>
+                  <h3>{product.title}</h3>
+                  <p>{product.description}</p>
 
-                <div className="product-footer-row">
-                  <span className={product.stock > 0 ? 'stock-pill available' : 'stock-pill unavailable'}>
-                    {product.stock > 0 ? 'Disponible' : 'Consultar stock'}
-                  </span>
-                  <a href={productHref} target="_blank" rel="noreferrer">
-                    Consultar
-                  </a>
+                  <div className="product-price-stack">
+                    <div className="product-price-row">
+                      {hasPromo ? (
+                        <>
+                          <span>Precio</span>
+                          <strong>{formatPrice(product.promoPrice)}</strong>
+                          <small>{formatPrice(product.price)}</small>
+                        </>
+                      ) : (
+                        <>
+                          <span>Precio</span>
+                          <strong>{formatPrice(product.price)}</strong>
+                        </>
+                      )}
+                    </div>
+
+                    {hasCardPrice ? (
+                      <div className="product-card-price-row">
+                        <span>Precio tarjeta</span>
+                        <strong>{formatPrice(product.cardPrice)}</strong>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <div className="product-footer-row">
+                    <span className={product.stock > 0 ? 'stock-pill available' : 'stock-pill unavailable'}>
+                      {product.stock > 0 ? 'Disponible' : 'Consultar stock'}
+                    </span>
+                    <a
+                      href={productHref}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={() => trackProductConsult(product)}
+                    >
+                      Consultar
+                    </a>
+                  </div>
                 </div>
-              </div>
-            </article>
-          )
-        })}
-      </div>
+              </article>
+            )
+          })}
+        </div>
+      ) : (
+        <p className="product-empty">No encontramos productos con ese filtro. Probá otra categoría o búsqueda.</p>
+      )}
     </section>
   )
 }
