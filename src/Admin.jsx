@@ -18,6 +18,15 @@ const emptyProduct = {
   displayOrder: '0',
 }
 
+const emptyStats = {
+  totalConsults: 0,
+  todayConsults: 0,
+  totalProducts: 0,
+  visibleProducts: 0,
+  outOfStockProducts: 0,
+  topProducts: [],
+}
+
 function normalizeProductForForm(product) {
   return {
     code: product.code || '',
@@ -47,10 +56,60 @@ function formatPrice(value) {
   }).format(amount)
 }
 
+function formatCsvCell(value) {
+  const text = String(value ?? '').replace(/"/g, '""')
+  return `"${text}"`
+}
+
+function downloadProductsCsv(products) {
+  const headers = [
+    'codigo',
+    'nombre',
+    'categoria',
+    'descripcion',
+    'precio',
+    'precio_promo',
+    'precio_tarjeta',
+    'stock',
+    'imagen',
+    'visible',
+    'destacado',
+    'orden',
+  ]
+  const rows = products.map((product) => [
+    product.code,
+    product.title,
+    product.category,
+    product.description,
+    product.price,
+    product.promoPrice || '',
+    product.cardPrice || '',
+    product.stock,
+    product.imageSrc,
+    product.isActive ? 'SI' : 'NO',
+    product.isFeatured ? 'SI' : 'NO',
+    product.displayOrder,
+  ])
+  const csv = [headers, ...rows]
+    .map((row) => row.map(formatCsvCell).join(','))
+    .join('\n')
+  const blob = new Blob([`\ufeff${csv}`], { type: 'text/csv;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = `anavim-productos-${new Date().toISOString().slice(0, 10)}.csv`
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  window.setTimeout(() => URL.revokeObjectURL(url), 300)
+}
+
 export default function AdminApp() {
   const [token, setToken] = useState(() => localStorage.getItem(TOKEN_KEY) || '')
   const [loginToken, setLoginToken] = useState('')
   const [products, setProducts] = useState([])
+  const [stats, setStats] = useState(emptyStats)
+  const [statsStatus, setStatsStatus] = useState('idle')
   const [form, setForm] = useState(emptyProduct)
   const [editingId, setEditingId] = useState(null)
   const [status, setStatus] = useState('idle')
@@ -103,8 +162,25 @@ export default function AdminApp() {
     }
   }
 
+  async function loadStats() {
+    if (!token) return
+
+    setStatsStatus('loading')
+
+    try {
+      const data = await adminFetch('/api/admin/stats')
+      setStats({ ...emptyStats, ...(data.stats || {}) })
+      setStatsStatus('ready')
+    } catch {
+      setStats(emptyStats)
+      setStatsStatus('error')
+    }
+  }
+
   useEffect(() => {
+    if (!token) return
     loadProducts()
+    loadStats()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token])
 
@@ -137,6 +213,7 @@ export default function AdminApp() {
     localStorage.removeItem(TOKEN_KEY)
     setToken('')
     setProducts([])
+    setStats(emptyStats)
     setForm(emptyProduct)
     setEditingId(null)
     setMessage('Sesión cerrada.')
@@ -152,9 +229,26 @@ export default function AdminApp() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  function resetForm() {
+  function resetForm({ notify = false } = {}) {
     setEditingId(null)
     setForm(emptyProduct)
+    if (notify) setMessage('Formulario limpio.')
+  }
+
+  function handleExportProducts() {
+    if (!products.length) {
+      setStatus('error')
+      setMessage('No hay productos para exportar.')
+      return
+    }
+
+    downloadProductsCsv(products)
+    setStatus('ready')
+    setMessage('Exportación CSV generada.')
+  }
+
+  async function refreshAll() {
+    await Promise.all([loadProducts(), loadStats()])
   }
 
   async function handleSubmit(event) {
@@ -176,23 +270,33 @@ export default function AdminApp() {
       displayOrder: Number(form.displayOrder || 0),
     }
 
+    if (payload.cardPrice && payload.price && payload.cardPrice < payload.price) {
+      const confirmed = window.confirm(
+        'El precio tarjeta quedó menor al precio normal. ¿Querés guardarlo igual?',
+      )
+      if (!confirmed) {
+        setStatus('ready')
+        return
+      }
+    }
+
     try {
       if (editingId) {
         await adminFetch(`/api/admin/products/${editingId}`, {
           method: 'PUT',
           body: JSON.stringify(payload),
         })
-        setMessage('Producto actualizado.')
+        setMessage(`Producto actualizado correctamente: ${payload.title}.`)
       } else {
         await adminFetch('/api/admin/products', {
           method: 'POST',
           body: JSON.stringify(payload),
         })
-        setMessage('Producto creado.')
+        setMessage(`Producto creado correctamente: ${payload.title}.`)
       }
 
       resetForm()
-      await loadProducts()
+      await refreshAll()
     } catch (error) {
       setStatus('error')
       setMessage(error.message)
@@ -209,7 +313,7 @@ export default function AdminApp() {
     try {
       await adminFetch(`/api/admin/products/${product.id}`, { method: 'DELETE' })
       setMessage('Producto eliminado.')
-      await loadProducts()
+      await refreshAll()
     } catch (error) {
       setStatus('error')
       setMessage(error.message)
@@ -252,15 +356,55 @@ export default function AdminApp() {
         <div>
           <p className="admin-eyebrow">Panel privado</p>
           <h1>Productos ANAVIM</h1>
-          <p>Alta, edición, precios, promociones, stock y visibilidad del catálogo.</p>
+          <p>Alta, edición, precios, promociones, stock, consultas y visibilidad del catálogo.</p>
         </div>
         <div className="admin-header-actions">
-          <a href="/" target="_blank" rel="noreferrer">Ver web</a>
+          <a href="/#catalogo" target="_blank" rel="noreferrer">Ver catálogo</a>
+          <button type="button" onClick={handleExportProducts}>Exportar CSV</button>
           <button type="button" onClick={handleLogout}>Salir</button>
         </div>
       </header>
 
       {message ? <p className={`admin-message ${status === 'error' ? 'error' : 'success'}`}>{message}</p> : null}
+
+      <section className="admin-stats-grid" aria-label="Resumen del panel administrador">
+        <article>
+          <span>Consultas totales</span>
+          <strong>{stats.totalConsults}</strong>
+        </article>
+        <article>
+          <span>Consultas hoy</span>
+          <strong>{stats.todayConsults}</strong>
+        </article>
+        <article>
+          <span>Productos visibles</span>
+          <strong>{stats.visibleProducts}</strong>
+          <small>{stats.totalProducts} cargados</small>
+        </article>
+        <article>
+          <span>Sin stock</span>
+          <strong>{stats.outOfStockProducts}</strong>
+        </article>
+      </section>
+
+      <section className="admin-top-panel">
+        <div>
+          <p className="admin-eyebrow">Interés del catálogo</p>
+          <h2>Productos más consultados</h2>
+        </div>
+        {stats.topProducts?.length ? (
+          <ol>
+            {stats.topProducts.map((item) => (
+              <li key={`${item.productCode}-${item.productTitle}`}>
+                <span>{item.productTitle || item.productCode || 'Producto sin identificar'}</span>
+                <strong>{item.total} consultas</strong>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p>{statsStatus === 'loading' ? 'Cargando métricas...' : 'Todavía no hay consultas registradas.'}</p>
+        )}
+      </section>
 
       <section className="admin-grid-layout">
         <form className="admin-form" onSubmit={handleSubmit}>
@@ -338,7 +482,7 @@ export default function AdminApp() {
                 min="0"
                 value={form.cardPrice}
                 onChange={(event) => updateField('cardPrice', event.target.value)}
-                placeholder="MercadoLibre / tarjeta"
+                placeholder="Tarjeta"
               />
             </label>
             <label>
@@ -360,6 +504,15 @@ export default function AdminApp() {
               placeholder="/images/productos/biblia-infantil-01.png"
             />
           </label>
+
+          {form.imageSrc ? (
+            <div className="admin-image-preview">
+              <img src={form.imageSrc} alt="Vista previa del producto" />
+              <small>Vista previa desde la ruta cargada. Si no aparece, revisá nombre y ubicación del archivo.</small>
+            </div>
+          ) : (
+            <p className="admin-image-help">Podés dejar la imagen vacía y cargarla más adelante.</p>
+          )}
 
           <div className="admin-field-row two-columns">
             <label>
@@ -394,11 +547,9 @@ export default function AdminApp() {
             <button type="submit" disabled={status === 'saving'}>
               {editingId ? 'Guardar cambios' : 'Crear producto'}
             </button>
-            {editingId ? (
-              <button type="button" className="secondary" onClick={resetForm}>
-                Cancelar edición
-              </button>
-            ) : null}
+            <button type="button" className="secondary" onClick={() => resetForm({ notify: true })}>
+              Limpiar formulario
+            </button>
           </div>
         </form>
 
@@ -408,7 +559,7 @@ export default function AdminApp() {
               <p className="admin-eyebrow">Catálogo</p>
               <h2>{products.length} productos</h2>
             </div>
-            <button type="button" onClick={loadProducts}>Actualizar</button>
+            <button type="button" onClick={refreshAll}>Actualizar</button>
           </div>
 
           <div className="admin-product-list">
@@ -430,6 +581,7 @@ export default function AdminApp() {
                     <small className={product.isActive ? 'visible' : 'hidden'}>
                       {product.isActive ? 'Visible' : 'Oculto'}
                     </small>
+                    <a href="/#catalogo" target="_blank" rel="noreferrer">Ver web</a>
                     <button type="button" onClick={() => editProduct(product)}>Editar</button>
                     <button type="button" className="danger" onClick={() => deleteProduct(product)}>Eliminar</button>
                   </div>
