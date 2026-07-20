@@ -1,14 +1,18 @@
 # Configuración del panel administrador
 
-Este documento deja los pasos para activar el catálogo administrable de ANAVIM.
+Este documento deja los pasos para activar y mantener el catálogo administrable de ANAVIM.
 
 ## Qué agrega esta etapa
 
 - Ruta privada `/admin` para gestionar productos.
 - API pública `/api/products` para mostrar productos activos en la web.
 - API privada `/api/admin/products` para crear, editar y eliminar productos.
-- Base de datos D1 para guardar productos.
-- Botón público `Consultar` por producto, con mensaje automático a WhatsApp incluyendo nombre y código.
+- API privada `/api/admin/stats` para métricas internas.
+- API pública `/api/consults` para registrar clicks en `Consultar`.
+- Base de datos D1 para guardar productos y consultas.
+- Botón público `Consultar` por producto, con mensaje automático a WhatsApp incluyendo nombre, código, precio y precio tarjeta.
+- Búsqueda y filtro por categoría en el catálogo público.
+- Exportación CSV desde el panel administrador.
 
 ## Variables y bindings necesarios en Cloudflare Pages
 
@@ -41,7 +45,7 @@ La migración inicial está en:
 migrations/0001_products.sql
 ```
 
-Si la tabla `products` ya existe, aplicar también esta migración nueva:
+Si la tabla `products` ya existe, aplicar también esta migración:
 
 ```txt
 migrations/0002_add_card_price.sql
@@ -52,6 +56,14 @@ SQL para ejecutar una sola vez en la consola D1:
 ```sql
 ALTER TABLE products ADD COLUMN card_price INTEGER;
 ```
+
+Para consultas y métricas privadas existe esta migración:
+
+```txt
+migrations/0003_consult_events.sql
+```
+
+El sistema también intenta crear esa tabla automáticamente cuando se usa `/api/consults` o `/api/admin/stats`, para no frenar el funcionamiento del catálogo.
 
 ## Acceso al panel
 
@@ -69,12 +81,20 @@ Desde ahí se puede cargar:
 - Descripción.
 - Precio.
 - Precio promocional.
-- Precio tarjeta / MercadoLibre.
+- Precio tarjeta.
 - Stock.
 - Ruta de imagen.
 - Visibilidad en la web.
 - Destacado.
 - Orden.
+
+También se puede:
+
+- Ver métricas de consultas.
+- Ver productos más consultados.
+- Exportar catálogo a CSV.
+- Limpiar formulario.
+- Ver vista previa de imagen por ruta.
 
 ## Imágenes de productos
 
@@ -89,8 +109,6 @@ Y se cargan en el admin como ruta pública, por ejemplo:
 ```txt
 /images/productos/biblia-infantil-01.png
 ```
-
-Más adelante, si se quiere subir imágenes directamente desde el panel, conviene evaluar Cloudflare R2 u otra solución similar.
 
 ## Criterio de seguridad
 
