@@ -347,13 +347,16 @@ function ProductCatalogSection({ standalone = false }) {
     <section
       className={`section product-section ${standalone ? 'product-section-standalone' : ''}`}
       id="catalogo"
-      aria-labelledby="catalogo-title"
+      aria-label={standalone ? 'Catálogo de productos' : undefined}
+      aria-labelledby={!standalone ? 'catalogo-title' : undefined}
     >
-      <div className="section-heading compact">
-        <p className="eyebrow">{siteContent.catalog.eyebrow}</p>
-        <h2 id="catalogo-title">{siteContent.catalog.title}</h2>
-        <p>{siteContent.catalog.text}</p>
-      </div>
+      {!standalone ? (
+        <div className="section-heading compact">
+          <p className="eyebrow">{siteContent.catalog.eyebrow}</p>
+          <h2 id="catalogo-title">{siteContent.catalog.title}</h2>
+          <p>{siteContent.catalog.text}</p>
+        </div>
+      ) : null}
 
       {products.length ? (
         <>
