@@ -1,0 +1,29 @@
+.gallery-card {
+  cursor: pointer;
+}
+
+.gallery-card div::after {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  max-width: 100%;
+  margin-top: 1rem;
+  padding: 0.45rem 0.75rem;
+  color: var(--paper);
+  content: "Ver en Instagram ↗";
+  background: rgba(255, 250, 241, 0.14);
+  border: 1px solid rgba(255, 250, 241, 0.2);
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.03em;
+}
+
+.gallery-card:hover div::after {
+  background: rgba(255, 250, 241, 0.22);
+}
+
+.gallery-card:focus-within {
+  outline: 3px solid rgba(184, 120, 84, 0.36);
+  outline-offset: 4px;
+}
