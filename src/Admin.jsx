@@ -359,7 +359,7 @@ export default function AdminApp() {
           <p>Alta, edición, precios, promociones, stock, consultas y visibilidad del catálogo.</p>
         </div>
         <div className="admin-header-actions">
-          <a href="/#catalogo" target="_blank" rel="noreferrer">Ver catálogo</a>
+          <a href="/catalogo" target="_blank" rel="noreferrer">Ver catálogo</a>
           <button type="button" onClick={handleExportProducts}>Exportar CSV</button>
           <button type="button" onClick={handleLogout}>Salir</button>
         </div>
@@ -581,7 +581,7 @@ export default function AdminApp() {
                     <small className={product.isActive ? 'visible' : 'hidden'}>
                       {product.isActive ? 'Visible' : 'Oculto'}
                     </small>
-                    <a href="/#catalogo" target="_blank" rel="noreferrer">Ver web</a>
+                    <a href="/catalogo" target="_blank" rel="noreferrer">Ver catálogo</a>
                     <button type="button" onClick={() => editProduct(product)}>Editar</button>
                     <button type="button" className="danger" onClick={() => deleteProduct(product)}>Eliminar</button>
                   </div>
