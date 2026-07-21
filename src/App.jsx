@@ -58,10 +58,10 @@ function trackProductConsult(product) {
   }).catch(() => {})
 }
 
-function Header() {
+function Header({ currentPage = 'home' }) {
   return (
     <header className="site-header">
-      <a className="brand-link" href="#inicio" aria-label="Ir al inicio">
+      <a className="brand-link" href="/" aria-label="Ir al inicio">
         <img src="/logo-anavim.svg" alt="ANAVIM - Libros y Café" />
         <span>
           <strong>{siteContent.brand.name}</strong>
@@ -70,12 +70,11 @@ function Header() {
       </a>
 
       <nav className="main-nav" aria-label="Navegación principal">
-        <a href="#libros">Libros</a>
-        <a href="#cafe">Café</a>
-        <a href="#catalogo">Catálogo</a>
-        <a href="#como-comprar">Cómo comprar</a>
-        <a href="#nosotros">Nosotros</a>
-        <a href="#contacto">Contacto</a>
+        <a href="/" aria-current={currentPage === 'home' ? 'page' : undefined}>Inicio</a>
+        <a href="/catalogo" aria-current={currentPage === 'catalog' ? 'page' : undefined}>Catálogo</a>
+        <a href="/#como-comprar">Cómo comprar</a>
+        <a href="/#nosotros">Nosotros</a>
+        <a href="/#contacto">Contacto</a>
       </nav>
     </header>
   )
@@ -96,16 +95,11 @@ function Hero() {
         </div>
 
         <div className="hero-actions">
-          <a className="btn btn-primary" href={whatsappHref} target="_blank" rel="noreferrer">
-            {contactLabel}
+          <a className="btn btn-primary" href="/catalogo">
+            Ver catálogo
           </a>
-          <a
-            className="btn btn-secondary"
-            href={siteContent.contact.instagramUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {siteContent.hero.secondaryCta || 'Ver Instagram'}
+          <a className="btn btn-secondary" href={whatsappHref} target="_blank" rel="noreferrer">
+            {contactLabel}
           </a>
         </div>
       </div>
@@ -179,7 +173,116 @@ function FeaturedSection() {
   )
 }
 
-function ProductCatalogSection() {
+function CatalogTeaserSection() {
+  return (
+    <section className="section catalog-teaser-section" aria-labelledby="catalogo-home-title">
+      <div className="catalog-teaser-panel">
+        <div>
+          <p className="eyebrow">Catálogo ANAVIM</p>
+          <h2 id="catalogo-home-title">Todo el catálogo en una página aparte.</h2>
+          <p>
+            Para que la portada quede liviana, el catálogo completo ahora tiene su propio espacio con buscador,
+            filtros, precios, stock y consulta directa por WhatsApp.
+          </p>
+          <div className="hero-actions">
+            <a className="btn btn-primary" href="/catalogo">
+              Ver catálogo completo
+            </a>
+            <a className="btn btn-secondary" href={whatsappHref} target="_blank" rel="noreferrer">
+              Consultar por WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <div className="catalog-teaser-grid" aria-label="Resumen del catálogo">
+          <article>
+            <span>01</span>
+            <h3>Buscador</h3>
+            <p>Encontrá rápido por nombre, código, categoría o descripción.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Precios claros</h3>
+            <p>Precio normal, promo y precio tarjeta cuando corresponda.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Consulta directa</h3>
+            <p>El botón Consultar abre WhatsApp con el producto ya armado.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ProductCard({ product }) {
+  const hasPromo = Boolean(product.promoPrice && product.promoPrice < product.price)
+  const hasCardPrice = Boolean(product.cardPrice)
+  const productHref = getProductWhatsappHref(product)
+
+  return (
+    <article className="product-card" key={product.id || product.code}>
+      {product.imageSrc ? (
+        <img className="product-image" src={product.imageSrc} alt={product.title} loading="lazy" />
+      ) : (
+        <div className="product-image product-image-placeholder" aria-hidden="true">
+          <span>{product.category || 'ANAVIM'}</span>
+        </div>
+      )}
+
+      <div className="product-body">
+        <div className="product-meta">
+          <span>{product.category}</span>
+          {product.code ? <small>{product.code}</small> : null}
+        </div>
+
+        <h3>{product.title}</h3>
+        <p>{product.description}</p>
+
+        <div className="product-price-stack">
+          <div className="product-price-row">
+            {hasPromo ? (
+              <>
+                <span>Precio</span>
+                <strong>{formatPrice(product.promoPrice)}</strong>
+                <small>{formatPrice(product.price)}</small>
+              </>
+            ) : (
+              <>
+                <span>Precio</span>
+                <strong>{formatPrice(product.price)}</strong>
+              </>
+            )}
+          </div>
+
+          {hasCardPrice ? (
+            <div className="product-card-price-row">
+              <span>Precio tarjeta</span>
+              <strong>{formatPrice(product.cardPrice)}</strong>
+            </div>
+          ) : null}
+        </div>
+
+        <div className="product-footer-row">
+          <span className={product.stock > 0 ? 'stock-pill available' : 'stock-pill unavailable'}>
+            {product.stock > 0 ? 'Disponible' : 'Consultar stock'}
+          </span>
+          <a
+            href={productHref}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => trackProductConsult(product)}
+          >
+            Consultar
+          </a>
+        </div>
+      </div>
+    </article>
+  )
+}
+
+function ProductCatalogSection({ standalone = false }) {
   const [products, setProducts] = useState([])
   const [status, setStatus] = useState('loading')
   const [searchTerm, setSearchTerm] = useState('')
@@ -209,7 +312,21 @@ function ProductCatalogSection() {
     }
   }, [])
 
-  if (status === 'loading' || status === 'error' || products.length === 0) return null
+  if (status === 'loading') {
+    return standalone ? (
+      <section className="section product-section product-section-standalone" aria-live="polite">
+        <p className="product-empty">Cargando catálogo...</p>
+      </section>
+    ) : null
+  }
+
+  if (status === 'error') {
+    return standalone ? (
+      <section className="section product-section product-section-standalone" aria-live="polite">
+        <p className="product-empty">No se pudo cargar el catálogo. Probá nuevamente en unos minutos.</p>
+      </section>
+    ) : null
+  }
 
   const categories = Array.from(
     new Set(products.map((product) => product.category).filter(Boolean)),
@@ -227,109 +344,57 @@ function ProductCatalogSection() {
   })
 
   return (
-    <section className="section product-section" id="catalogo" aria-labelledby="catalogo-title">
+    <section
+      className={`section product-section ${standalone ? 'product-section-standalone' : ''}`}
+      id="catalogo"
+      aria-labelledby="catalogo-title"
+    >
       <div className="section-heading compact">
         <p className="eyebrow">{siteContent.catalog.eyebrow}</p>
         <h2 id="catalogo-title">{siteContent.catalog.title}</h2>
         <p>{siteContent.catalog.text}</p>
       </div>
 
-      <div className="product-toolbar" aria-label="Filtros del catálogo">
-        <label>
-          Buscar
-          <input
-            type="search"
-            value={searchTerm}
-            onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Libro, Biblia, café..."
-          />
-        </label>
-        <label>
-          Categoría
-          <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)}>
-            <option value="Todas">Todas</option>
-            {categories.map((category) => (
-              <option value={category} key={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </label>
-        <span>
-          {filteredProducts.length} de {products.length} productos
-        </span>
-      </div>
+      {products.length ? (
+        <>
+          <div className="product-toolbar" aria-label="Filtros del catálogo">
+            <label>
+              Buscar
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Libro, Biblia, café..."
+              />
+            </label>
+            <label>
+              Categoría
+              <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)}>
+                <option value="Todas">Todas</option>
+                {categories.map((category) => (
+                  <option value={category} key={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <span>
+              {filteredProducts.length} de {products.length} productos
+            </span>
+          </div>
 
-      {filteredProducts.length ? (
-        <div className="product-grid">
-          {filteredProducts.map((product) => {
-            const hasPromo = Boolean(product.promoPrice && product.promoPrice < product.price)
-            const hasCardPrice = Boolean(product.cardPrice)
-            const productHref = getProductWhatsappHref(product)
-
-            return (
-              <article className="product-card" key={product.id || product.code}>
-                {product.imageSrc ? (
-                  <img className="product-image" src={product.imageSrc} alt={product.title} loading="lazy" />
-                ) : (
-                  <div className="product-image product-image-placeholder" aria-hidden="true">
-                    <span>{product.category || 'ANAVIM'}</span>
-                  </div>
-                )}
-
-                <div className="product-body">
-                  <div className="product-meta">
-                    <span>{product.category}</span>
-                    {product.code ? <small>{product.code}</small> : null}
-                  </div>
-
-                  <h3>{product.title}</h3>
-                  <p>{product.description}</p>
-
-                  <div className="product-price-stack">
-                    <div className="product-price-row">
-                      {hasPromo ? (
-                        <>
-                          <span>Precio</span>
-                          <strong>{formatPrice(product.promoPrice)}</strong>
-                          <small>{formatPrice(product.price)}</small>
-                        </>
-                      ) : (
-                        <>
-                          <span>Precio</span>
-                          <strong>{formatPrice(product.price)}</strong>
-                        </>
-                      )}
-                    </div>
-
-                    {hasCardPrice ? (
-                      <div className="product-card-price-row">
-                        <span>Precio tarjeta</span>
-                        <strong>{formatPrice(product.cardPrice)}</strong>
-                      </div>
-                    ) : null}
-                  </div>
-
-                  <div className="product-footer-row">
-                    <span className={product.stock > 0 ? 'stock-pill available' : 'stock-pill unavailable'}>
-                      {product.stock > 0 ? 'Disponible' : 'Consultar stock'}
-                    </span>
-                    <a
-                      href={productHref}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={() => trackProductConsult(product)}
-                    >
-                      Consultar
-                    </a>
-                  </div>
-                </div>
-              </article>
-            )
-          })}
-        </div>
+          {filteredProducts.length ? (
+            <div className="product-grid">
+              {filteredProducts.map((product) => (
+                <ProductCard product={product} key={product.id || product.code} />
+              ))}
+            </div>
+          ) : (
+            <p className="product-empty">No encontramos productos con ese filtro. Probá otra categoría o búsqueda.</p>
+          )}
+        </>
       ) : (
-        <p className="product-empty">No encontramos productos con ese filtro. Probá otra categoría o búsqueda.</p>
+        <p className="product-empty">Todavía no hay productos visibles en el catálogo.</p>
       )}
     </section>
   )
@@ -429,16 +494,11 @@ function FinalCtaSection() {
         <h2 id="final-cta-title">{siteContent.finalCta.title}</h2>
         <p>{siteContent.finalCta.text}</p>
         <div className="hero-actions final-cta-actions">
-          <a className="btn btn-primary" href={whatsappHref} target="_blank" rel="noreferrer">
-            {contactButtonLabel}
+          <a className="btn btn-primary" href="/catalogo">
+            Ver catálogo
           </a>
-          <a
-            className="btn btn-secondary"
-            href={siteContent.contact.instagramUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Ver Instagram
+          <a className="btn btn-secondary" href={whatsappHref} target="_blank" rel="noreferrer">
+            {contactButtonLabel}
           </a>
         </div>
       </div>
@@ -495,19 +555,15 @@ function Footer() {
   )
 }
 
-export default function App() {
-  const isAdminPath = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin')
-
-  if (isAdminPath) return <AdminApp />
-
+function HomePage() {
   return (
     <>
-      <Header />
+      <Header currentPage="home" />
       <main>
         <Hero />
         <ValueSection />
         <FeaturedSection />
-        <ProductCatalogSection />
+        <CatalogTeaserSection />
         <CategoriesSection />
         <ProcessSection />
         <GallerySection />
@@ -519,4 +575,56 @@ export default function App() {
       <FloatingWhatsapp />
     </>
   )
+}
+
+function CatalogPage() {
+  return (
+    <>
+      <Header currentPage="catalog" />
+      <main className="catalog-page-main">
+        <section className="catalog-page-hero" aria-labelledby="catalog-page-title">
+          <div>
+            <p className="eyebrow">Catálogo completo</p>
+            <h1 id="catalog-page-title">Libros, café y regalos disponibles.</h1>
+            <p>
+              Explorá los productos cargados por ANAVIM, filtrá por categoría y consultá directo por WhatsApp
+              con nombre, código y precio del producto.
+            </p>
+          </div>
+          <div className="catalog-page-note">
+            <strong>Showroom sin carrito</strong>
+            <span>Consultás disponibilidad y coordinamos compra, retiro o envío por mensaje.</span>
+          </div>
+        </section>
+
+        <ProductCatalogSection standalone />
+        <ContactSection />
+      </main>
+      <Footer />
+      <FloatingWhatsapp />
+    </>
+  )
+}
+
+export default function App() {
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '/'
+
+  useEffect(() => {
+    if (pathname.startsWith('/catalogo')) {
+      document.title = 'Catálogo | ANAVIM - Libros y Café'
+      return
+    }
+
+    if (pathname.startsWith('/admin')) {
+      document.title = 'Admin | ANAVIM - Libros y Café'
+      return
+    }
+
+    document.title = 'ANAVIM - Libros y Café'
+  }, [pathname])
+
+  if (pathname.startsWith('/admin')) return <AdminApp />
+  if (pathname.startsWith('/catalogo')) return <CatalogPage />
+
+  return <HomePage />
 }
