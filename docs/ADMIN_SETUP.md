@@ -4,6 +4,7 @@ Este documento deja los pasos para activar y mantener el catálogo administrable
 
 ## Qué agrega esta etapa
 
+- Ruta pública `/catalogo` para el catálogo completo separado del home.
 - Ruta privada `/admin` para gestionar productos.
 - API pública `/api/products` para mostrar productos activos en la web.
 - API privada `/api/admin/products` para crear, editar y eliminar productos.
@@ -64,6 +65,14 @@ migrations/0003_consult_events.sql
 ```
 
 El sistema también intenta crear esa tabla automáticamente cuando se usa `/api/consults` o `/api/admin/stats`, para no frenar el funcionamiento del catálogo.
+
+## Rutas principales
+
+```txt
+/         Home / showroom institucional
+/catalogo Catálogo completo con filtros, precios, stock y consulta
+/admin    Panel privado administrador
+```
 
 ## Acceso al panel
 
