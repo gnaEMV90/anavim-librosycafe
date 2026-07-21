@@ -1,4 +1,13 @@
+.site-header .main-nav a[href="/"] {
+  order: 1;
+}
+
+.site-header .main-nav a[href="/#como-comprar"] {
+  order: 2;
+}
+
 .site-header .main-nav a[href="/catalogo"] {
+  order: 3;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -14,6 +23,14 @@
     background 0.2s ease,
     box-shadow 0.2s ease,
     border-color 0.2s ease;
+}
+
+.site-header .main-nav a[href="/#nosotros"] {
+  order: 4;
+}
+
+.site-header .main-nav a[href="/#contacto"] {
+  order: 5;
 }
 
 .site-header .main-nav a[href="/catalogo"]::after {
