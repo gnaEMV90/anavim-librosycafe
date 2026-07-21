@@ -1,0 +1,35 @@
+.site-header .main-nav a[href="/catalogo"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  padding: 0.45rem 0.95rem;
+  color: var(--navy);
+  background: rgba(184, 120, 84, 0.14);
+  border: 1px solid rgba(184, 120, 84, 0.28);
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(30, 49, 75, 0.06);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.site-header .main-nav a[href="/catalogo"]::after {
+  display: none;
+}
+
+.site-header .main-nav a[href="/catalogo"]:hover {
+  transform: translateY(-1px);
+  background: rgba(184, 120, 84, 0.22);
+  border-color: rgba(184, 120, 84, 0.4);
+  box-shadow: 0 14px 28px rgba(30, 49, 75, 0.08);
+}
+
+.site-header .main-nav a[href="/catalogo"][aria-current="page"] {
+  color: var(--paper);
+  background: linear-gradient(135deg, var(--terracotta), #c98f69);
+  border-color: transparent;
+  box-shadow: 0 14px 30px rgba(184, 120, 84, 0.24);
+}
