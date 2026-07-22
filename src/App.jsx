@@ -5,6 +5,7 @@ import './featuredImages.css'
 import './showroomExtras.css'
 import './brandPolish.css'
 import './products.css'
+import './instagramFeed.css'
 
 const hasWhatsapp = Boolean(siteContent.contact.whatsappNumber?.trim())
 const whatsappHref = hasWhatsapp
@@ -71,8 +72,8 @@ function Header({ currentPage = 'home' }) {
 
       <nav className="main-nav" aria-label="Navegación principal">
         <a href="/" aria-current={currentPage === 'home' ? 'page' : undefined}>Inicio</a>
-        <a href="/catalogo" aria-current={currentPage === 'catalog' ? 'page' : undefined}>Catálogo</a>
         <a href="/#como-comprar">Cómo comprar</a>
+        <a href="/catalogo" aria-current={currentPage === 'catalog' ? 'page' : undefined}>Catálogo</a>
         <a href="/#nosotros">Nosotros</a>
         <a href="/#contacto">Contacto</a>
       </nav>
@@ -436,23 +437,50 @@ function ProcessSection() {
 
 function GallerySection() {
   return (
-    <section className="section gallery-section" aria-labelledby="galeria-title">
+    <section className="section gallery-section curated-instagram-section" aria-labelledby="galeria-title">
       <div className="section-heading compact">
-        <p className="eyebrow">Inspirado en Instagram</p>
-        <h2 id="galeria-title">Un vistazo a ANAVIM</h2>
+        <div>
+          <p className="eyebrow">Desde Instagram</p>
+          <h2 id="galeria-title">Publicaciones destacadas</h2>
+        </div>
+        <a className="instagram-section-link" href={siteContent.contact.instagramUrl} target="_blank" rel="noreferrer">
+          Ver perfil completo
+        </a>
       </div>
 
-      <div className="gallery-grid">
-        {siteContent.gallery.map((item, index) => (
-          <article className={`gallery-card gallery-card-${index + 1}`} key={item.title}>
-            <div>
-              <span className="gallery-number">0{index + 1}</span>
-              {item.tag ? <small className="gallery-tag">{item.tag}</small> : null}
-              <h3>{item.title}</h3>
-              <p>{item.text}</p>
-            </div>
-          </article>
-        ))}
+      <div className="gallery-grid curated-instagram-grid">
+        {siteContent.gallery.map((item, index) => {
+          const Card = item.url ? 'a' : 'article'
+
+          return (
+            <Card
+              className={`gallery-card instagram-post-card gallery-card-${index + 1}`}
+              key={item.title}
+              href={item.url || undefined}
+              target={item.url ? '_blank' : undefined}
+              rel={item.url ? 'noreferrer' : undefined}
+              aria-label={item.url ? `Ver en Instagram: ${item.title}` : undefined}
+            >
+              <div>
+                <div className="instagram-card-topline">
+                  <span className="gallery-number">0{index + 1}</span>
+                  {item.type ? <small>{item.type}</small> : null}
+                </div>
+                {item.tag ? <small className="gallery-tag">{item.tag}</small> : null}
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+                {item.labels?.length ? (
+                  <div className="instagram-labels" aria-label="Etiquetas de la publicación">
+                    {item.labels.map((label) => (
+                      <span key={label}>{label}</span>
+                    ))}
+                  </div>
+                ) : null}
+                {item.url ? <strong className="instagram-post-cta">Ver publicación ↗</strong> : null}
+              </div>
+            </Card>
+          )
+        })}
       </div>
     </section>
   )
