@@ -42,21 +42,34 @@
 }
 
 .hero-card {
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(22rem, 38vw, 35rem);
+  padding: clamp(1rem, 4vw, 3rem);
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  aspect-ratio: auto;
 }
 
+.hero-card::before,
 .hero-card::after {
-  position: absolute;
-  left: 1.6rem;
-  bottom: 1.7rem;
-  max-width: 13rem;
-  color: rgba(30, 49, 75, 0.62);
-  content: "Cada página y cada taza, un espacio de encuentro.";
-  font-family: var(--font-display);
-  font-size: clamp(1rem, 1.4vw, 1.28rem);
-  font-style: italic;
-  font-weight: 600;
-  line-height: 1.25;
+  display: none;
+}
+
+.hero-card img {
+  width: min(100%, clamp(19rem, 28vw, 30rem));
+  height: auto;
+  max-width: none;
+  filter: drop-shadow(0 2rem 3.5rem rgba(30, 49, 75, 0.16));
+  transform: none;
+}
+
+.hero-card-note {
+  display: none;
 }
 
 .btn-primary {
@@ -203,8 +216,13 @@
     grid-template-columns: 1fr;
   }
 
-  .hero-card::after {
-    max-width: 16rem;
+  .hero-card {
+    min-height: auto;
+    padding-block: 2rem 0;
+  }
+
+  .hero-card img {
+    width: min(82vw, 22rem);
   }
 }
 
@@ -213,8 +231,12 @@
     font-size: 0.8rem;
   }
 
-  .hero-card::after {
-    display: none;
+  .hero-card {
+    padding-top: 1.5rem;
+  }
+
+  .hero-card img {
+    width: min(78vw, 18rem);
   }
 
   .about-highlight-card {
