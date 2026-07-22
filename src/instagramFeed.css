@@ -1,7 +1,11 @@
 .curated-instagram-section {
   background:
-    radial-gradient(circle at 88% 16%, rgba(184, 120, 84, 0.14), transparent 20rem),
+    radial-gradient(circle at 88% 16%, rgba(184, 120, 84, 0.12), transparent 20rem),
     rgba(255, 250, 241, 0.5);
+}
+
+.instagram-section-heading {
+  align-items: end;
 }
 
 .instagram-section-link {
@@ -28,82 +32,53 @@
 }
 
 .curated-instagram-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-rows: auto;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.45rem);
 }
 
-.curated-instagram-grid .gallery-card-1,
-.curated-instagram-grid .gallery-card-4 {
-  grid-row: auto;
-  grid-column: auto;
-}
-
-.curated-instagram-grid .instagram-post-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 0;
+.instagram-post-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
   overflow: hidden;
   color: var(--coffee);
   text-decoration: none;
   background: rgba(255, 250, 241, 0.96);
   border: 1px solid rgba(83, 54, 38, 0.1);
-  border-radius: 1.55rem;
+  border-radius: 1.7rem;
   box-shadow: 0 18px 46px rgba(30, 49, 75, 0.08);
-  isolation: isolate;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
     border-color 0.2s ease;
 }
 
-.curated-instagram-grid .instagram-post-card::before {
-  position: static;
-  inset: auto;
-  z-index: auto;
-  display: block;
-  flex: none;
-  width: 100%;
-  height: clamp(14rem, 18vw, 18rem);
-  content: "";
-  background-color: var(--sand);
-  background-image: url('/images/instagram/literatura-cristiana.PNG');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-
-.curated-instagram-grid .instagram-post-card:nth-child(2)::before {
-  background-image: url('/images/instagram/cafe-especialidad.PNG');
-}
-
-.curated-instagram-grid .instagram-post-card:nth-child(3)::before {
-  background-image: url('/images/instagram/material-ninos.PNG');
-}
-
-.curated-instagram-grid .instagram-post-card:nth-child(4)::before {
-  background-image: url('/images/instagram/guardianes-fe.PNG');
-}
-
-.curated-instagram-grid .instagram-post-card::after {
+.instagram-post-card::before,
+.instagram-post-card::after {
   display: none;
 }
 
-.curated-instagram-grid .instagram-post-card:hover {
+.instagram-post-card:hover {
   transform: translateY(-4px);
   border-color: rgba(184, 120, 84, 0.18);
   box-shadow: 0 24px 58px rgba(30, 49, 75, 0.13);
 }
 
-.curated-instagram-grid .instagram-post-card > div {
+.instagram-post-image {
+  display: block;
+  width: 100%;
+  height: clamp(18rem, 28vw, 25rem);
+  object-fit: cover;
+  object-position: center;
+  background: var(--latte);
+}
+
+.instagram-post-content {
   display: flex;
-  flex: 1;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
-  padding: 1.15rem;
+  min-height: 13rem;
+  padding: clamp(1rem, 2vw, 1.35rem);
 }
 
 .instagram-card-topline {
@@ -115,21 +90,14 @@
   margin-bottom: 0.75rem;
 }
 
-.curated-instagram-grid .gallery-number {
-  color: var(--terracotta);
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-}
-
 .instagram-card-topline small,
-.curated-instagram-grid .gallery-tag {
+.instagram-card-topline .gallery-tag {
   display: inline-flex;
   align-items: center;
   min-height: 1.55rem;
   padding: 0.26rem 0.58rem;
   color: var(--coffee);
-  background: rgba(231, 211, 180, 0.34);
+  background: rgba(231, 211, 180, 0.38);
   border: 1px solid rgba(83, 54, 38, 0.1);
   border-radius: 999px;
   font-size: 0.68rem;
@@ -138,33 +106,36 @@
   text-transform: uppercase;
 }
 
-.curated-instagram-grid .gallery-tag {
-  margin-bottom: 0.72rem;
+.instagram-card-topline .gallery-tag {
   color: var(--navy);
   background: rgba(30, 49, 75, 0.08);
   border-color: rgba(30, 49, 75, 0.08);
 }
 
-.curated-instagram-grid .instagram-post-card h3 {
-  margin-bottom: 0.5rem;
+.instagram-post-card h3 {
+  margin-bottom: 0.45rem;
   color: var(--navy-dark);
-  font-size: 1.16rem;
-  line-height: 1.15;
+  font-size: clamp(1.18rem, 1.7vw, 1.45rem);
+  line-height: 1.12;
 }
 
-.curated-instagram-grid .instagram-post-card p {
+.instagram-post-card p {
+  display: -webkit-box;
   margin-bottom: 0;
+  overflow: hidden;
   color: var(--muted);
   font-size: 0.96rem;
-  line-height: 1.55;
+  line-height: 1.5;
   opacity: 1;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .instagram-labels {
   display: flex;
   flex-wrap: wrap;
   gap: 0.42rem;
-  margin-top: 1rem;
+  margin-top: 0.85rem;
 }
 
 .instagram-labels span {
@@ -184,24 +155,76 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.25rem;
+  min-height: 2.3rem;
   margin-top: auto;
-  padding: 0.5rem 0.78rem;
+  padding: 0.52rem 0.82rem;
   color: var(--paper);
   background: var(--navy);
   border-radius: 999px;
+  box-shadow: 0 12px 26px rgba(30, 49, 75, 0.12);
   font-size: 0.82rem;
   font-weight: 900;
-  box-shadow: 0 12px 26px rgba(30, 49, 75, 0.12);
 }
 
 .instagram-labels + .instagram-post-cta {
   margin-top: 1rem;
 }
 
-@media (max-width: 1100px) {
-  .curated-instagram-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.final-contact-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 26rem);
+  gap: clamp(1rem, 4vw, 4rem);
+  align-items: center;
+}
+
+.final-contact-layout .final-cta-panel {
+  max-width: none;
+}
+
+.final-contact-card {
+  width: 100%;
+  max-width: 26rem;
+  margin-left: auto;
+  padding: 1.25rem;
+  background: rgba(255, 250, 241, 0.92);
+  border: 1px solid rgba(83, 54, 38, 0.1);
+  border-radius: 1.45rem;
+  box-shadow: 0 18px 44px rgba(30, 49, 75, 0.08);
+}
+
+.final-contact-card .btn {
+  width: 100%;
+}
+
+.final-contact-card a:not(.btn),
+.final-contact-card span {
+  display: flex;
+  width: 100%;
+  min-height: 2.65rem;
+  align-items: center;
+  padding: 0.72rem 0.85rem;
+  color: var(--coffee);
+  background: rgba(231, 211, 180, 0.42);
+  border-radius: 0.75rem;
+  font-size: 0.92rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.final-contact-card a:not(.btn):hover {
+  color: var(--navy);
+  background: rgba(231, 211, 180, 0.62);
+}
+
+@media (max-width: 980px) {
+  .curated-instagram-grid,
+  .final-contact-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .final-contact-card {
+    max-width: none;
+    margin-left: 0;
   }
 }
 
@@ -210,11 +233,11 @@
     margin-top: 1rem;
   }
 
-  .curated-instagram-grid {
-    grid-template-columns: 1fr;
+  .instagram-section-heading {
+    align-items: start;
   }
 
-  .curated-instagram-grid .instagram-post-card::before {
+  .instagram-post-image {
     height: 16rem;
   }
 }
