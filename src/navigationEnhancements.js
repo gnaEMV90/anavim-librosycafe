@@ -9,20 +9,24 @@ function enhanceNavigation() {
 
   if (!nav) return false
 
-  if (!nav.querySelector('a[href="/#redes"]')) {
-    const contactLink = Array.from(nav.querySelectorAll('a')).find(
-      (link) => link.textContent.trim().toLowerCase() === 'contacto',
-    )
-    const redesLink = document.createElement('a')
+  const existingRedesLinks = Array.from(nav.querySelectorAll('a')).filter(
+    (link) => link.textContent.trim().toLowerCase() === 'redes' || link.getAttribute('href') === '/#redes',
+  )
+  const redesLink = existingRedesLinks[0] || document.createElement('a')
 
-    redesLink.href = '/#redes'
-    redesLink.textContent = 'Redes'
+  existingRedesLinks.slice(1).forEach((link) => link.remove())
 
-    if (contactLink) {
-      nav.insertBefore(redesLink, contactLink)
-    } else {
-      nav.appendChild(redesLink)
-    }
+  redesLink.href = '/#redes'
+  redesLink.textContent = 'Redes'
+
+  const contactLink = Array.from(nav.querySelectorAll('a')).find(
+    (link) => link.textContent.trim().toLowerCase() === 'contacto',
+  )
+
+  if (contactLink && redesLink.nextElementSibling !== contactLink) {
+    nav.insertBefore(redesLink, contactLink)
+  } else if (!contactLink && !redesLink.parentElement) {
+    nav.appendChild(redesLink)
   }
 
   return !expectsInstagramSection || Boolean(document.querySelector('#redes'))
