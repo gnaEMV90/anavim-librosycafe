@@ -1,3 +1,21 @@
+function normalizeNavText(link) {
+  return link.textContent.trim().toLowerCase()
+}
+
+function getNavKey(link) {
+  const text = normalizeNavText(link)
+  const href = link.getAttribute('href') || ''
+
+  if (text === 'inicio' || href === '/') return 'inicio'
+  if (text === 'cómo comprar' || text === 'como comprar' || href.includes('como-comprar')) return 'como-comprar'
+  if (text === 'catálogo' || text === 'catalogo' || href.includes('catalogo')) return 'catalogo'
+  if (text === 'nosotros' || href.includes('nosotros')) return 'nosotros'
+  if (text === 'redes' || href.includes('redes')) return 'redes'
+  if (text === 'contacto' || href.includes('contacto')) return 'contacto'
+
+  return text
+}
+
 function placeRedesLink() {
   const nav = document.querySelector('.main-nav')
   const instagramSection = document.querySelector('.curated-instagram-section')
@@ -8,27 +26,40 @@ function placeRedesLink() {
 
   if (!nav) return false
 
-  const links = Array.from(nav.querySelectorAll('a'))
-  const contactLink = links.find((link) => link.textContent.trim().toLowerCase() === 'contacto')
+  const linksByKey = new Map()
+  const unknownLinks = []
 
-  nav.querySelectorAll('a').forEach((link) => {
-    const text = link.textContent.trim().toLowerCase()
-    const href = link.getAttribute('href')
+  Array.from(nav.querySelectorAll('a')).forEach((link) => {
+    const key = getNavKey(link)
 
-    if (text === 'redes' || href === '/#redes' || href === '#redes') {
+    if (key === 'redes') {
       link.remove()
+      return
     }
+
+    if (['inicio', 'como-comprar', 'catalogo', 'nosotros', 'contacto'].includes(key)) {
+      linksByKey.set(key, link)
+      return
+    }
+
+    unknownLinks.push(link)
   })
 
   const redesLink = document.createElement('a')
   redesLink.href = '/#redes'
   redesLink.textContent = 'Redes'
 
-  if (contactLink && contactLink.parentElement === nav) {
-    nav.insertBefore(redesLink, contactLink)
-  } else {
-    nav.appendChild(redesLink)
-  }
+  const orderedLinks = [
+    linksByKey.get('inicio'),
+    linksByKey.get('como-comprar'),
+    linksByKey.get('catalogo'),
+    linksByKey.get('nosotros'),
+    redesLink,
+    linksByKey.get('contacto'),
+    ...unknownLinks,
+  ].filter(Boolean)
+
+  orderedLinks.forEach((link) => nav.appendChild(link))
 
   return true
 }
@@ -41,7 +72,7 @@ function enhanceNavigation() {
     attempts += 1
     placeRedesLink()
 
-    if (attempts >= 20) {
+    if (attempts >= 40) {
       window.clearInterval(interval)
     }
   }, 150)
