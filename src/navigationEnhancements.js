@@ -1,81 +1,65 @@
-function normalizeNavText(link) {
-  return link.textContent.trim().toLowerCase()
-}
+const navItems = [
+  { text: 'Inicio', href: '/' },
+  { text: 'Cómo comprar', href: '/#como-comprar' },
+  { text: 'Catálogo', href: '/catalogo' },
+  { text: 'Nosotros', href: '/#nosotros' },
+  { text: 'Redes', href: '/#redes' },
+  { text: 'Contacto', href: '/#contacto' },
+]
 
-function getNavKey(link) {
-  const text = normalizeNavText(link)
-  const href = link.getAttribute('href') || ''
-
-  if (text === 'inicio' || href === '/') return 'inicio'
-  if (text === 'cómo comprar' || text === 'como comprar' || href.includes('como-comprar')) return 'como-comprar'
-  if (text === 'catálogo' || text === 'catalogo' || href.includes('catalogo')) return 'catalogo'
-  if (text === 'nosotros' || href.includes('nosotros')) return 'nosotros'
-  if (text === 'redes' || href.includes('redes')) return 'redes'
-  if (text === 'contacto' || href.includes('contacto')) return 'contacto'
-
-  return text
-}
-
-function placeRedesLink() {
-  const nav = document.querySelector('.main-nav')
+function setInstagramSectionId() {
   const instagramSection = document.querySelector('.curated-instagram-section')
 
-  if (instagramSection && instagramSection.id !== 'redes') {
+  if (instagramSection) {
     instagramSection.id = 'redes'
   }
+}
+
+function isCurrentPage(href) {
+  const pathname = window.location.pathname
+
+  if (href === '/') return pathname === '/' || pathname === ''
+  if (href === '/catalogo') return pathname.startsWith('/catalogo')
+
+  return false
+}
+
+function buildLink(item) {
+  const link = document.createElement('a')
+
+  link.href = item.href
+  link.textContent = item.text
+
+  if (isCurrentPage(item.href)) {
+    link.setAttribute('aria-current', 'page')
+  }
+
+  return link
+}
+
+function rebuildNavigation() {
+  const nav = document.querySelector('.main-nav')
+
+  setInstagramSectionId()
 
   if (!nav) return false
 
-  const linksByKey = new Map()
-  const unknownLinks = []
-
-  Array.from(nav.querySelectorAll('a')).forEach((link) => {
-    const key = getNavKey(link)
-
-    if (key === 'redes') {
-      link.remove()
-      return
-    }
-
-    if (['inicio', 'como-comprar', 'catalogo', 'nosotros', 'contacto'].includes(key)) {
-      linksByKey.set(key, link)
-      return
-    }
-
-    unknownLinks.push(link)
-  })
-
-  const redesLink = document.createElement('a')
-  redesLink.href = '/#redes'
-  redesLink.textContent = 'Redes'
-
-  const orderedLinks = [
-    linksByKey.get('inicio'),
-    linksByKey.get('como-comprar'),
-    linksByKey.get('catalogo'),
-    linksByKey.get('nosotros'),
-    redesLink,
-    linksByKey.get('contacto'),
-    ...unknownLinks,
-  ].filter(Boolean)
-
-  orderedLinks.forEach((link) => nav.appendChild(link))
-
+  nav.replaceChildren(...navItems.map(buildLink))
   return true
 }
 
 function enhanceNavigation() {
-  placeRedesLink()
+  rebuildNavigation()
 
   let attempts = 0
   const interval = window.setInterval(() => {
     attempts += 1
-    placeRedesLink()
+    rebuildNavigation()
 
     if (attempts >= 40) {
       window.clearInterval(interval)
     }
-  }, 150)
+  }, 100)
 }
 
 if (document.readyState === 'loading') {
