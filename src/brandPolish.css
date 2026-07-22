@@ -63,14 +63,15 @@
 }
 
 .hero-card img {
-  content: url('/images/logo-anavim.png?v=2');
-  width: min(115%, clamp(31rem, 46vw, 52rem)) !important;
+  content: url('/images/logo-anavim.png?v=3');
+  width: min(120%, clamp(34rem, 50vw, 56rem)) !important;
   height: auto !important;
   max-width: none !important;
   margin: 0 !important;
   border: 0 !important;
-  border-radius: 0 !important;
+  border-radius: 999px !important;
   box-shadow: none !important;
+  clip-path: circle(48.5% at 50% 50%);
   object-fit: contain !important;
   filter: drop-shadow(0 2rem 3.5rem rgba(30, 49, 75, 0.14));
   transform: translateX(1.5rem) !important;
@@ -230,7 +231,7 @@
   }
 
   .hero-card img {
-    width: min(88vw, 30rem) !important;
+    width: min(90vw, 32rem) !important;
     transform: none !important;
   }
 }
@@ -245,7 +246,7 @@
   }
 
   .hero-card img {
-    width: min(86vw, 24rem) !important;
+    width: min(88vw, 25rem) !important;
   }
 
   .about-highlight-card {
