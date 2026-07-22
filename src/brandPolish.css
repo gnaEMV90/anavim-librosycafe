@@ -42,34 +42,38 @@
 }
 
 .hero-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: clamp(22rem, 38vw, 35rem);
-  padding: clamp(1rem, 4vw, 3rem);
-  overflow: visible;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  aspect-ratio: auto;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: clamp(20rem, 34vw, 33rem) !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  aspect-ratio: auto !important;
 }
 
 .hero-card::before,
 .hero-card::after {
-  display: none;
+  display: none !important;
+  content: none !important;
 }
 
 .hero-card img {
-  width: min(100%, clamp(19rem, 28vw, 30rem));
-  height: auto;
-  max-width: none;
+  content: url('/images/logo-anavim.png');
+  width: min(100%, clamp(22rem, 34vw, 36rem)) !important;
+  height: auto !important;
+  max-width: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   filter: drop-shadow(0 2rem 3.5rem rgba(30, 49, 75, 0.16));
-  transform: none;
+  transform: none !important;
 }
 
 .hero-card-note {
-  display: none;
+  display: none !important;
 }
 
 .btn-primary {
@@ -217,12 +221,12 @@
   }
 
   .hero-card {
-    min-height: auto;
-    padding-block: 2rem 0;
+    min-height: auto !important;
+    padding-block: 2rem 0 !important;
   }
 
   .hero-card img {
-    width: min(82vw, 22rem);
+    width: min(82vw, 26rem) !important;
   }
 }
 
@@ -232,11 +236,11 @@
   }
 
   .hero-card {
-    padding-top: 1.5rem;
+    padding-top: 1.5rem !important;
   }
 
   .hero-card img {
-    width: min(78vw, 18rem);
+    width: min(78vw, 21rem) !important;
   }
 
   .about-highlight-card {
