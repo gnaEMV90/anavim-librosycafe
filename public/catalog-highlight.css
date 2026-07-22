@@ -29,8 +29,12 @@
   order: 4;
 }
 
-.site-header .main-nav a[href="/#contacto"] {
+.site-header .main-nav a[href="/#redes"] {
   order: 5;
+}
+
+.site-header .main-nav a[href="/#contacto"] {
+  order: 6;
 }
 
 .site-header .main-nav a[href="/catalogo"]::after {
