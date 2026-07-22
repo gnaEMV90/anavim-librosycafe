@@ -438,7 +438,7 @@ function ProcessSection() {
 function GallerySection() {
   return (
     <section className="section gallery-section curated-instagram-section" aria-labelledby="galeria-title">
-      <div className="section-heading compact">
+      <div className="section-heading compact instagram-section-heading">
         <div>
           <p className="eyebrow">Desde Instagram</p>
           <h2 id="galeria-title">Publicaciones destacadas</h2>
@@ -448,30 +448,33 @@ function GallerySection() {
         </a>
       </div>
 
-      <div className="gallery-grid curated-instagram-grid">
-        {siteContent.gallery.map((item, index) => {
+      <div className="curated-instagram-grid">
+        {siteContent.gallery.map((item) => {
           const Card = item.url ? 'a' : 'article'
 
           return (
             <Card
-              className={`gallery-card instagram-post-card gallery-card-${index + 1}`}
+              className="instagram-post-card"
               key={item.title}
               href={item.url || undefined}
               target={item.url ? '_blank' : undefined}
               rel={item.url ? 'noreferrer' : undefined}
               aria-label={item.url ? `Ver en Instagram: ${item.title}` : undefined}
             >
-              <div>
+              {item.imageSrc ? (
+                <img className="instagram-post-image" src={item.imageSrc} alt={item.imageAlt || item.title} loading="lazy" />
+              ) : null}
+
+              <div className="instagram-post-content">
                 <div className="instagram-card-topline">
-                  <span className="gallery-number">0{index + 1}</span>
+                  {item.tag ? <small className="gallery-tag">{item.tag}</small> : null}
                   {item.type ? <small>{item.type}</small> : null}
                 </div>
-                {item.tag ? <small className="gallery-tag">{item.tag}</small> : null}
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
                 {item.labels?.length ? (
                   <div className="instagram-labels" aria-label="Etiquetas de la publicación">
-                    {item.labels.map((label) => (
+                    {item.labels.slice(0, 3).map((label) => (
                       <span key={label}>{label}</span>
                     ))}
                   </div>
@@ -517,45 +520,41 @@ function AboutSection() {
   )
 }
 
-function FinalCtaSection() {
+function ContactCard() {
   return (
-    <section className="section final-cta-section" aria-labelledby="final-cta-title">
-      <div className="final-cta-panel">
-        <p className="eyebrow">Consultas</p>
-        <h2 id="final-cta-title">{siteContent.finalCta.title}</h2>
-        <p>{siteContent.finalCta.text}</p>
-        <div className="hero-actions final-cta-actions">
-          <a className="btn btn-primary" href="/catalogo">
-            Ver catálogo
-          </a>
-          <a className="btn btn-secondary" href={whatsappHref} target="_blank" rel="noreferrer">
-            {contactButtonLabel}
-          </a>
-        </div>
-      </div>
-    </section>
+    <div className="contact-card final-contact-card">
+      <a className="btn btn-primary" href={whatsappHref} target="_blank" rel="noreferrer">
+        {contactButtonLabel}
+      </a>
+      <a href={siteContent.contact.instagramUrl} target="_blank" rel="noreferrer">
+        @{siteContent.brand.instagramUser}
+      </a>
+      <span>{siteContent.contact.location}</span>
+      {siteContent.contact.email ? <span>{siteContent.contact.email}</span> : null}
+      {!hasWhatsapp ? <small>WhatsApp pendiente de configurar.</small> : null}
+    </div>
   )
 }
 
-function ContactSection() {
+function FinalCtaSection() {
   return (
-    <section className="section contact-section" id="contacto" aria-labelledby="contacto-title">
-      <div>
-        <p className="eyebrow">Contacto</p>
-        <h2 id="contacto-title">¿Buscás un libro, café o una promo para regalar?</h2>
-        <p>{siteContent.contact.note}</p>
-      </div>
+    <section className="section final-cta-section" id="contacto" aria-labelledby="final-cta-title">
+      <div className="final-contact-layout">
+        <div className="final-cta-panel">
+          <p className="eyebrow">Consultas</p>
+          <h2 id="final-cta-title">{siteContent.finalCta.title}</h2>
+          <p>{siteContent.finalCta.text}</p>
+          <div className="hero-actions final-cta-actions">
+            <a className="btn btn-primary" href="/catalogo">
+              Ver catálogo
+            </a>
+            <a className="btn btn-secondary" href={whatsappHref} target="_blank" rel="noreferrer">
+              {contactButtonLabel}
+            </a>
+          </div>
+        </div>
 
-      <div className="contact-card">
-        <a className="btn btn-primary" href={whatsappHref} target="_blank" rel="noreferrer">
-          {contactButtonLabel}
-        </a>
-        <a href={siteContent.contact.instagramUrl} target="_blank" rel="noreferrer">
-          @{siteContent.brand.instagramUser}
-        </a>
-        <span>{siteContent.contact.location}</span>
-        {siteContent.contact.email ? <span>{siteContent.contact.email}</span> : null}
-        {!hasWhatsapp ? <small>WhatsApp pendiente de configurar.</small> : null}
+        <ContactCard />
       </div>
     </section>
   )
@@ -600,7 +599,6 @@ function HomePage() {
         <GallerySection />
         <AboutSection />
         <FinalCtaSection />
-        <ContactSection />
       </main>
       <Footer />
       <FloatingWhatsapp />
@@ -629,7 +627,7 @@ function CatalogPage() {
         </section>
 
         <ProductCatalogSection standalone />
-        <ContactSection />
+        <FinalCtaSection />
       </main>
       <Footer />
       <FloatingWhatsapp />
