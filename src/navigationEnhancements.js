@@ -1,7 +1,6 @@
-function enhanceNavigation() {
+function placeRedesLink() {
   const nav = document.querySelector('.main-nav')
   const instagramSection = document.querySelector('.curated-instagram-section')
-  const expectsInstagramSection = window.location.pathname === '/' || window.location.pathname === ''
 
   if (instagramSection && instagramSection.id !== 'redes') {
     instagramSection.id = 'redes'
@@ -9,44 +8,47 @@ function enhanceNavigation() {
 
   if (!nav) return false
 
-  const existingRedesLinks = Array.from(nav.querySelectorAll('a')).filter(
-    (link) => link.textContent.trim().toLowerCase() === 'redes' || link.getAttribute('href') === '/#redes',
-  )
-  const redesLink = existingRedesLinks[0] || document.createElement('a')
+  const links = Array.from(nav.querySelectorAll('a'))
+  const contactLink = links.find((link) => link.textContent.trim().toLowerCase() === 'contacto')
 
-  existingRedesLinks.slice(1).forEach((link) => link.remove())
+  nav.querySelectorAll('a').forEach((link) => {
+    const text = link.textContent.trim().toLowerCase()
+    const href = link.getAttribute('href')
 
-  redesLink.href = '/#redes'
-  redesLink.textContent = 'Redes'
-
-  const contactLink = Array.from(nav.querySelectorAll('a')).find(
-    (link) => link.textContent.trim().toLowerCase() === 'contacto',
-  )
-
-  if (contactLink && redesLink.nextElementSibling !== contactLink) {
-    nav.insertBefore(redesLink, contactLink)
-  } else if (!contactLink && !redesLink.parentElement) {
-    nav.appendChild(redesLink)
-  }
-
-  return !expectsInstagramSection || Boolean(document.querySelector('#redes'))
-}
-
-function watchNavigation() {
-  if (enhanceNavigation()) return
-
-  const observer = new MutationObserver(() => {
-    if (enhanceNavigation()) {
-      observer.disconnect()
+    if (text === 'redes' || href === '/#redes' || href === '#redes') {
+      link.remove()
     }
   })
 
-  observer.observe(document.documentElement, { childList: true, subtree: true })
-  window.setTimeout(() => observer.disconnect(), 5000)
+  const redesLink = document.createElement('a')
+  redesLink.href = '/#redes'
+  redesLink.textContent = 'Redes'
+
+  if (contactLink && contactLink.parentElement === nav) {
+    nav.insertBefore(redesLink, contactLink)
+  } else {
+    nav.appendChild(redesLink)
+  }
+
+  return true
+}
+
+function enhanceNavigation() {
+  placeRedesLink()
+
+  let attempts = 0
+  const interval = window.setInterval(() => {
+    attempts += 1
+    placeRedesLink()
+
+    if (attempts >= 20) {
+      window.clearInterval(interval)
+    }
+  }, 150)
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', watchNavigation, { once: true })
+  document.addEventListener('DOMContentLoaded', enhanceNavigation, { once: true })
 } else {
-  watchNavigation()
+  enhanceNavigation()
 }
